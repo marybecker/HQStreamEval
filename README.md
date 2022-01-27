@@ -1,4 +1,4 @@
-# High Quality Stream Assessment in Connecticut
+# High Quality Stream Evaluation Framework
 
 ## Proposed Project Abstract
 
