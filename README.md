@@ -25,6 +25,9 @@ I propose that an interactive web-mapping application would be the best way to c
 
 ## Literature Cited / Gathering to Explore Further
 
+[Ahearn, E.A., 2010, Regional regression equations to estimate flow-duration statistics at ungaged stream sites in
+Connecticut: U.S. Geological Survey Scientific Investigations Report 2010–5052, 45 p](https://pubs.usgs.gov/sir/2010/5052/pdf/sir2010-5052_web.pdf)
+
 [Bellucci, C.J., Becker, M., Beauchene, M. 2011. Characteristics of macroinvertebrate and fish communities from 30 least disturbed small streams in Connecticut. Northeastern Naturalist 18:411-444](https://portal.ct.gov/-/media/DEEP/water/water_quality_management/monitoringpubs/Bellucci-et-al-2011-Northeastern-Naturalist.pdf)
 
 [Davies, S.P., and S.K. Jackson. 2006. The Biological Condition Gradient: A descriptive model for interpreting change in aquatic ecosystems. Ecological Applications 16:1251–1266.](https://doi.org/10.1890/1051-0761(2006)016[1251:TBCGAD]2.0.CO;2)
