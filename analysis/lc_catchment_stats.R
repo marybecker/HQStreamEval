@@ -42,7 +42,8 @@ extract_lc <- function(r_file,poly,l_type){
     df <- data.frame(poly$HydroID,l_ex[,2],ex[,2])
     df[,3] <- df[,3]-1
     df$pct <- df[,3]/df[,2] # calc proportion land cover
-    colnames(df) <- c("HydroID","cnt",paste0(l_type,"_",lc_yr,"_sum"),paste0(l_type,"_",lc_yr,"_pct"))
+    colnames(df) <- c("HydroID","cnt",paste0(l_type,"_",lc_yr,"_sum"),
+                      paste0(l_type,"_",lc_yr,"_pct"))
     write.csv(df,paste0(l_type,"_",lc_yr,".csv"),row.names=FALSE)
   }
 }
