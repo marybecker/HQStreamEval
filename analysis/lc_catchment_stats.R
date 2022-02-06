@@ -9,7 +9,7 @@ library(stringr)
 
 
 # set working directory
-setwd("D:/HQEval_spatial_data/")
+setwd("/home/mkozlak/Documents/Projects/GitHub/HQStreamEval/analysis/data/raw_spatial")
 
 r_path <- "raster/"
 sf_path <- "vector/"

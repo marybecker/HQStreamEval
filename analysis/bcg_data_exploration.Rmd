@@ -18,7 +18,7 @@ library(leaflet)
 library(sp)
 
 # read in data
-d <- read.csv("data/bug_bcg_sites_020422.csv",header=TRUE)
+d <- read.csv("data/raw/bug_bcg_sites_020422.csv",header=TRUE)
 
 # number of sites in the data set
 dim(d)[1]
@@ -40,6 +40,13 @@ m %>%
                    label = ~NAME)
 ```
 
+## Check out spatial data using rgdal
+
+```{r}
+library(rgdal)
+
+ogrInfo(dsn="data/raw_spatial/vector/catchments_ct.shp",layer="catchments_ct")
+```
 
 
 
