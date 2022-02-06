@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Raster File Folder
+analysis/data/raw_spatial/raster
