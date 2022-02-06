@@ -1,0 +1,46 @@
+---
+title: "CT BCG Exploratory Analysis"
+author: "Mary Becker"
+date: "2/6/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+## Exploring Locations of Data Points Across the State
+
+Data includes sites where macroinvertebrate data has been collected using consistent
+methods across the state of Connecticut over the past 30 years.
+```{r}
+library(leaflet)
+library(sp)
+
+# read in data
+d <- read.csv("data/bug_bcg_sites_020422.csv",header=TRUE)
+
+# number of sites in the data set
+dim(d)[1]
+
+```
+
+```{r}
+# convert to spatial point dataframe
+
+sp_d <- SpatialPointsDataFrame(coords = d[,c("YLAT","XLONG")], 
+                               data = d, 
+                               proj4string = CRS("+proj=longlat +datum=WGS84"))
+
+m <- leaflet(data = sp_d) %>% setView(lng = -72.6999, lat = 41.5999, zoom = 9)
+
+m %>% 
+  addProviderTiles(providers$CartoDB.Voyager) %>%
+  addCircleMarkers(~XLONG, ~YLAT, radius = 6, stroke = FALSE, fillOpacity = 0.5,
+                   label = ~NAME)
+```
+
+
+
+
+
