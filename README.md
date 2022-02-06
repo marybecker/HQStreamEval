@@ -1,6 +1,7 @@
 # High Quality Stream Evaluation Framework
 
 In progress exploratory analysis notes:   https://marybecker.github.io/HQStreamEval/analysis/bcg_data_exploration.html
+
 In progress land cover data processing:   https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R
 
 ## Proposed Project Abstract
