@@ -1,5 +1,8 @@
 # High Quality Stream Evaluation Framework
 
+In progress exploratory analysis notes:   https://marybecker.github.io/HQStreamEval/analysis/bcg_data_exploration.html
+In progress land cover data processing:   https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R
+
 ## Proposed Project Abstract
 
 Significant progress has been made to clean up rivers since the passage of the 1972 Federal Water Pollution and Control Act amendments, more commonly referred to as the Clean Water Act, fifty years ago. However, since that time much of the focus has been on restoring waste-receiving streams with overt pollution problems which has left high quality streams vulnerable and open to degradation.  High quality streams support aquatic species not found in streams with higher levels of pollution ([Bellucci et al 2011](https://portal.ct.gov/-/media/DEEP/water/water_quality_management/monitoringpubs/Bellucci-et-al-2011-Northeastern-Naturalist.pdf)) along with a wide array of critical ecosystem services that benefit the social and economic well-being of humans ([EPA 2012](https://www.epa.gov/sites/default/files/2015-10/documents/economic_benefits_factsheet3.pdf)).  Preliminary work conducted in Connecticut suggests the possible reduction of species sensitive to pollution in some high quality streams sampling sites monitored over the the past 30 years ([Eltz & Beauchene 2020](https://portal.ct.gov/-/media/DEEP/fishing/fisheries_management/Trout-Research-and-Management/Probabilistic-Sampling-of-Wild-Brook-Trout-Occurrence-in-Stream-Survey-Samples-Final-05082020.pdf), [Becker 2021a](https://marybecker.github.io/Biointegrity/), [Becker & Bellucci 2021](https://marybecker.github.io/BioVariability/)). 
