@@ -48,6 +48,15 @@ library(rgdal)
 ogrInfo(dsn="data/raw_spatial/vector/catchments_ct.shp",layer="catchments_ct")
 ```
 
+## Example of CT Land Cover Data 2015
+
+```{r}
+library(terra)
+
+lc <- "data/raw_spatial/raster/landcover_2015.tif"
+ct_lc <- rast(lc)
+plot(ct_lc)
+```
 
 
 

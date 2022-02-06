@@ -105,3 +105,4 @@ dist
 
 # Raster File Folder
 analysis/data/raw_spatial/raster
+.Rproj.user
