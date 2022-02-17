@@ -2,6 +2,8 @@
 
 In progress exploratory analysis notes:   https://marybecker.github.io/HQStreamEval/analysis/bcg_data_exploration.html
 
+In progress identify high quality biological stream sample notes:   https://marybecker.github.io/HQStreamEval/analysis/bcg_2_high_quality_streams.html
+
 In progress land cover data processing:   https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R
 
 ## Proposed Project Abstract
