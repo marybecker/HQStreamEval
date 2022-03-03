@@ -30,7 +30,7 @@ This information could be used by aquatic resource managers, decision makers and
 
 [UCONN CLEAR Changing Landscape and Forest Fragmentation Datasets](https://clear.uconn.edu/projects/landscape/index.htm)
 
-## Draft Data Analysis Notes
+## Methods - Draft Data Analysis Notes
 
 In progress exploratory analysis notes:   https://marybecker.github.io/HQStreamEval/analysis/bcg_data_exploration.html
 
