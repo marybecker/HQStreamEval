@@ -1,0 +1,21 @@
+Data Cleaning Notes
+
+FISH
+
+Fish samples were excluded if:
+- Reach length less than 25 meters 
+- Less than 10 individuals in small streams
+- Less than 20 individuals in mid-large streams
+- Greater than 250 M reach in small streams
+- Greater than 500 M reach in mid-large streams
+- Older Pomperaug basin samples with slimy sculpin than may have been knobfin sculpin 
+
+If multiple samples were collected in a single year one was randomly chosen
+
+BUGS
+
+Only first field duplicate or lab subsample rep was used in the analysis
+If multiple samples were collected in a single year one was randomly chosen
+Only kicknet sample method samples used
+Samples with less than 100 individuals were excluded
+Only fall samples were used
