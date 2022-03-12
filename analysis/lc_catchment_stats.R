@@ -6,13 +6,10 @@ library(stringr)
 # https://cran.rstudio.com/web/packages/terra/terra.pdf
 # https://rspatial.org/terra/spatial/Spatialdata.pdf
 # https://rspatial.org/terra/analysis/analysis.pdf
+base = "C:/Users/deepuser/Documents/Projects/ProgramDev/HQStreamEval"
 
-
-# set working directory
-setwd("/home/mkozlak/Documents/Projects/GitHub/HQStreamEval/analysis/data/raw_spatial")
-
-r_path <- "raster/"
-sf_path <- "vector/"
+r_path <- paste0(base,"/analysis/data/raw_spatial/raster/")
+sf_path <- paste0(base,"/analysis/data/raw_spatial/vector/")
 
 ### functions ##################################################################
 
@@ -26,8 +23,8 @@ reclass_lc <- function(r_file,l_spec,l_type){
   for (i in 1:(length(r_file))){
     lc_yr <- str_sub(r_file[i],-8,-5) # get year
     lc <- rast(paste0(r_path,r_file[i])) # read in raster file
-    rc <- classify(lc, mat,include.lowest=FALSE) # reclassify
-    writeRaster(rc,paste0("raster/ag_",lc_yr,".tif"),overwrite=TRUE)
+    rc <- classify(lc, l_spec,include.lowest=FALSE) # reclassify
+    writeRaster(rc,paste0(r_path,l_type,"_",lc_yr,".tif"),overwrite=TRUE)
   }
 }
 
@@ -44,28 +41,52 @@ extract_lc <- function(r_file,poly,l_type){
     df$pct <- df[,3]/df[,2] # calc proportion land cover
     colnames(df) <- c("HydroID","cnt",paste0(l_type,"_",lc_yr,"_sum"),
                       paste0(l_type,"_",lc_yr,"_pct"))
-    write.csv(df,paste0(l_type,"_",lc_yr,".csv"),row.names=FALSE)
+    write.csv(df,paste0(base,"/analysis/data/",l_type,"_",lc_yr,".csv"),
+              row.names=FALSE)
   }
 }
 
 
 ### reclassify #################################################################
+### ct lc: https://clear.uconn.edu/projects/landscape/about/classes.htm#top ####
+### ct ff: https://clear.uconn.edu/projects/landscape/CT/forestfrag.htm ########
 
 # list files
-grids    <- list.files(r_path, pattern = "*.tif$")
-lc_grids <- list.files(r_path, pattern = "landcover_*")
+landcover<- "coreforest"
+# grids    <- list.files(r_path, pattern = "*.tif$")
+lc_grids <- list.files(r_path, pattern = "forestfrag_*")
 
-c_spec <- cbind(from = c(-Inf, 3, 4), to = c(3, 4, Inf), becomes = c(0, 1, 0))
+# specify the classes to be re-classed
+# c_spec <- cbind(from = c(-Inf, 1, 10), to = c(7, 10, Inf), becomes = c(0, 1, 0))
+c_spec <- cbind(from = c(-Inf, 3, 6), to = c(3, 6, Inf), 
+                becomes = c(0, 1, 0))
 
-reclass_lc(lc_grids,c_spec,"ag")
+reclass_lc(lc_grids,c_spec,landcover)
 
 ### extract by poly ############################################################
 
 # get only specified landcover grids
-ag_grids <- list.files(r_path, pattern = "ag_*")
+grids <- list.files(r_path, pattern = paste0(landcover,"_*"))
 
 #read-in the polygon shapefile of river catchments
-poly <- vect(paste0(sf_path,"Catchments01_CT.shp"))
+poly <- vect(paste0(sf_path,"catchments_ct.shp"))
 
-extract_lc(ag_grids,poly,"ag")
+extract_lc(grids,poly,landcover)
+
+### combine all years to one csv  ##############################################
+
+lc_csv <- list.files("analysis/data", pattern = paste0(landcover,"_*"))
+
+lc_df <- read.csv(paste0("analysis/data/",lc_csv[1]), header = TRUE)
+lc_df <- lc_df[,1:3]
+
+for (i in 2:length(lc_csv)){
+  lc_df_i <- read.csv(paste0("analysis/data/",lc_csv[i]), header = TRUE)
+  lc_df <- merge(lc_df,lc_df_i[,c(1,3)], by = "HydroID")
+}
+
+write.csv(lc_df,paste0("analysis/data/",landcover,"_statewide_allyrs.csv"),
+          row.names = FALSE)
+
+
 

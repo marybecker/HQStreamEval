@@ -1,0 +1,70 @@
+---
+title: "Data Set Exploratory Analysis"
+author: "Mary Becker"
+date: "2022-02-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+## Macroinvertebrate Sampling Locations
+
+Data includes sites where macro-invertebrate data has been collected using consistent
+methods across the state of Connecticut over the past 30 years by CT DEEP.
+```{r}
+library(leaflet)
+library(sp)
+
+# read in data
+d <- read.csv("data/raw/bug_bcg_sites_020422.csv",header=TRUE)
+
+# number of sites in the data set
+dim(d)[1]
+
+```
+
+```{r}
+# convert to spatial point dataframe
+
+sp_d <- SpatialPointsDataFrame(coords = d[,c("YLAT","XLONG")], 
+                               data = d, 
+                               proj4string = CRS("+proj=longlat +datum=WGS84"))
+
+m <- leaflet(data = sp_d) %>% setView(lng = -72.6999, lat = 41.5999, zoom = 9)
+
+m %>% 
+  addProviderTiles(providers$CartoDB.Voyager) %>%
+  addCircleMarkers(~XLONG, ~YLAT, radius = 6, stroke = FALSE, fillOpacity = 0.5,
+                   label = ~NAME)
+```
+
+## Drainage Catchments
+
+Catchments are derived from a high resolution 1:24000 NHD layer developed by USGS Conte Lab.  Minor updates to correct for network drainage errors in the original data set for Connecticut.
+
+```{r}
+library(rgdal)
+
+ogrInfo(dsn="data/raw_spatial/vector/catchments_ct.shp",layer="catchments_ct")
+
+catch <- readOGR(dsn="data/raw_spatial/vector/catchments_ct.shp",layer="catchments_ct")
+
+plot(catch)
+```
+
+## CT Land Cover Data 
+
+Connecticut remote sensing-based land cover data set that charts landscape changes in Connecticut and portions of New York. It was developed by the UCONN Center for Land Use Education and Research (CLEAR). It covers the 30-year period from 1985 to 2015 (with in-between dates of 1990, 1995, 2002, 2006 and 2010). It includes information on basic land cover, as well as subsidiary analyses of riparian corridor land cover, impervious cover and forest fragmentation analysis. 
+
+```{r}
+library(terra)
+
+lc <- "data/raw_spatial/raster/landcover_2015.tif"
+ct_lc <- rast(lc)
+plot(ct_lc)
+```
+
+
+
