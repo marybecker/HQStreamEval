@@ -8,7 +8,8 @@ The Biological Condition Gradient (BCG) is a scientific framework to uniformly a
 
 The BCG framework provides a way to designate refined aquatic life uses along a gradient of stress.  This allows for a more precise measure of biological condition rather than a ‘pass’/’fail’ system that has been previously used for biological assessments (ref - CALM).  There are 6 levels of biological condition described by the framework (Figure 1).  The levels are described in terms of changes in the structure and function of native aquatic communities. The levels range from a natural pristine condition with little anthropogenic stress (Level 1) to a severely stressed and altered condition that exhibits extreme changes in structure and ecosystem function (Level 6).  
 
-![*Figure 1. Biological Condition Gradient Conceptual Model*](images/BCG.png)
+![Figure 1. Biological Condition Gradient Conceptual Model](analysis/images/BCG.png)
+*Figure 1. Biological Condition Gradient Conceptual Model*
 
 Using existing biological and land cover datasets I will develop methods to identify high quality streams using the BCG. This includes first using biological datasets to identify waters that support sensitive species typically found in areas that are least disturbed by human activity. Next, I will calculate and identify the landscape features in the drainage basins and catchments that contribute to high quality biological samples. Finally, I will develop a model using these landscape characteristics to predict the likelihood of stream catchments where samples have not been collected. I will use these predictions to identify those high-quality streams that are most vulnerable to degradation if human disturbance is increased in those catchments.
 
