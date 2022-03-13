@@ -1,6 +1,6 @@
 # Enhancing U.S. Clean Water Act Implementation for Continuing Success - A Framework to Inform High Quality Stream Protection Using the Biological Condition Gradient 
 
-[**Proposal Presentation - Draft 2022-03-13**](https://marybecker.github.io/HQStreamEval/presentation/index.html)
+[**Proposal Presentation - Draft 2022-03-13**](https://marybecker.github.io/HQStreamEval)
 
 ## I. Introduction
 Significant progress has been made to clean up rivers since the passage of the 1972 U.S. Federal Water Pollution and Control Act amendments, more commonly referred to as the Clean Water Act (CWA), fifty years ago. However, since that time much of the focus has been on restoring waste-receiving streams with overt pollution problems which has left high quality streams vulnerable and open to degradation (U.S. EPA 2012). High quality streams support aquatic species not found in streams with higher levels of pollution (Bellucci et al 2011) along with a wide array of critical ecosystem services that benefit the social and economic well-being of humans (EPA 2012).   Despite restoration efforts, studies around the U.S. have noted that aquatic ecosystems are continuing to decline and pollutants levels are increasing in pristine streams (U.S. EPA 2012, Hudy et al. 2011, Stoddard et al. 2016).  Preliminary work conducted in Connecticut suggests the possible reduction of species sensitive to pollution in some high-quality streams sampling sites monitored over the past 30 years (Eltz & Beauchene 2020, Becker 2021, Becker & Bellucci 2021).
@@ -52,7 +52,7 @@ The anticipated application layout is a simple straight forward design with a sm
 ### D. Thematic representation
 ### E. User Interaction
 ### F. Aesthetics and design considerations
-![HQ Vulnerability](images/HQWater_Vulnerability_Mockup.jpg)
+![HQ Vulnerability](images/hq_water_vulnerability_map_mockup.jpg)
 ## III. Results
 ## IV. Discussion
 ## V. References / Anticipated References
