@@ -104,5 +104,7 @@ dist
 .tern-port
 
 # Raster File Folder
-.analysis/data/raw_spatial/raster
+analysis/data/raw_spatial/raster
 .Rproj.user
+
+analysis/data/raw_spatial/vector/flowline_ct_detailed.shp

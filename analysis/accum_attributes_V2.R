@@ -16,7 +16,7 @@
 ##         Algorithm: Dynamic Programming with BFS --> O(|V|)
 
 base <- 'analysis/data/'
-lc   <- 'coreforest'
+lc   <- 'dev'
 
 #import flow network files for a major basin
 mbasin <- 'statewide';
@@ -50,7 +50,7 @@ p        <- dim(params)[2];
 
 if(n != m) "ERROR"
 
-#enumerated hydro_id and next_down_id indecies
+#enumerated hydro_id and next_down_id indices
 nd_i <- as.integer(matrix(0, nrow=n, ncol=1));
 for(i in 1:n){ 
 	#all the nextdown idicies that the hydro ids point to...

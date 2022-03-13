@@ -88,6 +88,27 @@ m %>%
   addCircleMarkers(data = hq_sf, color = "#444444", radius = 4, 
                    stroke = FALSE, fillOpacity = 0.7,label = ~locationName) 
 
+# sf::st_write(hq_sf, dsn = "analysis/data/processed_spatial/hq_sites.geojson", 
+#              layer = "hq_sites.geojson")
+# 
+# sf::st_write(catch_hq, 
+#              dsn = "analysis/data/processed_spatial/hq_catchments.geojson", 
+#              layer = "hq_catchments.geojson")
+
+# minimum BCG level observed at a site
+
+min_bcg   <- aggregate(lev1Name ~ staSeq, data = raw, FUN = "min")
+min_bcg   <- merge(min_bcg, sites, by = "staSeq")
+min_bcg   <- merge(min_bcg, hydro, by = "staSeq")
+bcg_sites <- sf::st_as_sf(min_bcg, 
+                          coords = c("xlong","ylat"),
+                          crs = 4326) # csv to sf
+# sf::st_write(bcg_sites,
+#              dsn = "analysis/data/processed_spatial/min_bcg.geojson",
+#              layer = "min_bcg.geojson",
+#              append = FALSE)
+
+
            
 
 

@@ -1,4 +1,7 @@
 # Enhancing U.S. Clean Water Act Implementation for Continuing Success - A Framework to Inform High Quality Stream Protection Using the Biological Condition Gradient 
+
+[**Proposal Presentation - Draft 2022-03-13**](https://marybecker.github.io/HQStreamEval/presentation/hq_stream_eval_proposal.html)
+
 ## I. Introduction
 Significant progress has been made to clean up rivers since the passage of the 1972 U.S. Federal Water Pollution and Control Act amendments, more commonly referred to as the Clean Water Act (CWA), fifty years ago. However, since that time much of the focus has been on restoring waste-receiving streams with overt pollution problems which has left high quality streams vulnerable and open to degradation (U.S. EPA 2012). High quality streams support aquatic species not found in streams with higher levels of pollution (Bellucci et al 2011) along with a wide array of critical ecosystem services that benefit the social and economic well-being of humans (EPA 2012).   Despite restoration efforts, studies around the U.S. have noted that aquatic ecosystems are continuing to decline and pollutants levels are increasing in pristine streams (U.S. EPA 2012, Hudy et al. 2011, Stoddard et al. 2016).  Preliminary work conducted in Connecticut suggests the possible reduction of species sensitive to pollution in some high-quality streams sampling sites monitored over the past 30 years (Eltz & Beauchene 2020, Becker 2021, Becker & Bellucci 2021).
 
@@ -6,7 +9,7 @@ The Section 101(a) objective of the CWA is “…to restore and maintain the che
 
 The Biological Condition Gradient (BCG) is a scientific framework to uniformly and directly interpret biological responses to anthropogenic stress (Davies & Jackson, 2006).  Biological integrity is the ability of an aquatic ecosystem to support and maintain a balanced, adaptive community of organisms having a species composition, diversity, and functional organization comparable to that of natural habitats within a region. The presence, condition, numbers and types of fish, insects, algae, plants, and other organisms provide direct, accurate information about the health of water bodies. Biological assessments measure these factors and are the primary tool used to evaluate the condition of water bodies. Because biological communities are affected by all of the stressors to which they are exposed over time, bioassessments provide information on disturbances not always revealed by water chemistry or other measurements.
 
-The BCG framework provides a way to designate refined aquatic life uses along a gradient of stress.  This allows for a more precise measure of biological condition rather than a ‘pass’/’fail’ system that has been previously used for biological assessments (ref - CALM).  There are 6 levels of biological condition described by the framework (Figure 1).  The levels are described in terms of changes in the structure and function of native aquatic communities. The levels range from a natural pristine condition with little anthropogenic stress (Level 1) to a severely stressed and altered condition that exhibits extreme changes in structure and ecosystem function (Level 6).  
+The BCG framework provides a way to designate refined aquatic life uses along a gradient of stress.  This allows for a more precise measure of biological condition rather than a ‘pass’/’fail’ system that has been previously used for biological assessments (ref - CALM).  The BCG is a universal measurement system that is calibrated on a common scale for all states and regions.  There are 6 levels of biological condition described by the framework (Figure 1).  The levels are described in terms of changes in the structure and function of native aquatic communities. The levels range from a natural pristine condition with little anthropogenic stress (Level 1) to a severely stressed and altered condition that exhibits extreme changes in structure and ecosystem function (Level 6).  
 
 ![Figure 1. Biological Condition Gradient Conceptual Model](analysis/images/BCG.png)
 *Figure 1. Biological Condition Gradient Conceptual Model*
@@ -31,10 +34,9 @@ The model will be developed in several steps:
 **Biological Data Sets and Biological Condition Gradient Metric Calculations**
 
 Fish samples were collected by the CT DEEP Inland Fisheries and Ambient Monitoring and Assessment program using comparable methods during a May - October index period from 1988 – 2020 (Hagstrom et al. 1995, CT DEEP 2013). Crews sampled 10-20 mean stream widths with the average sample width being approximately 118 meters. Reach widths used in this dataset ranged from 25 to 500 meters. The type of gear that a crew used depended on the stream width. In small streams, crews typically sample with one backpack shocker. In medium-sized streams, they used 2 backpack shockers or 1 tote barge, and in large streams, crews sampled with multi-tote barges. All captured individuals were measured to the nearest centimeter and are identified to the species level. 
-
 Benthic macroinvertebrate samples were collected by the CT DEEP Ambient Monitoring and Assessment program from September through November using an 800-u m-mesh kick net from 1989 - 2020. A total of 2 meters squared of riffle habitat (12 kicks composited from multiple riffles of a stream reach) were sampled at each location. Samples were preserved in 70% ethyl alcohol and brought back to the laboratory for subsampling. A 200-organism subsample was taken using a random grid design (Plafkin et al. 1989) from each sampling location. Organisms were identified to the lowest practical taxon, generally species.
 
-Biological condition gradient metrics have been developed for both macro-invertebrate and fish communities in Connecticut.
+Biological condition gradient models have been developed for both macro-invertebrate and fish communities in Connecticut (Gerritsen & Jessup 2007, Stamp & Gerritsen 2013).  The models incorporate multiple attribute decision criteria to assign stream to levels or tiers of the BCG and it can be directly applied to designation of multiple aquatic life uses in Connecticut’s water quality criteria and standards.  The models were run using the [BioMonTools](https://github.com/leppott/BioMonTools) and [BCGcalc](https://github.com/leppott/BCGcalc) packages written for the R statistical programming language (Leppo 2022a, Leppo 2022b).
 
 **Characterization of temporally and spatially specific drainage basin conditions for biological samples**
 
@@ -42,7 +44,7 @@ I derived (x * number) of drainage basin predictors.  These predictors focused o
 
 ### B. Medium for delivery
 
-The anticipated application is a web-based client-side mapping application primarily designed for typically desktop use with a 1280 X 1024 resolution, but will also be suitable for smaller screen resolutions.  Pre-computed model predictions will be served as json files.  The anticipated technology stack includes HTML/CSS/Javascript, [D3.js](https://d3js.org/) and [MapBox JS GL](https://docs.mapbox.com/mapbox-gl-js/api/) or [Leaflet JS](https://leafletjs.com/).
+The anticipated application is a web-based client-side mapping application primarily designed for typically desktop use with a 1280 X 1024 resolution, but will also be suitable for smaller screen resolutions.  Pre-computed model predictions will be served as json files.  A series of R and Python scripts will document reproducible workflows of data processing and model development.  The anticipated technology stack for the web-based application includes HTML/CSS/Javascript, [D3.js](https://d3js.org/) and [MapBox JS GL](https://docs.mapbox.com/mapbox-gl-js/api/) or [Leaflet JS](https://leafletjs.com/).
 ### C. Application layout
 
 The anticipated application layout is a simple straight forward design with a small top title and info bar and then the map filling the majority of the space.
@@ -70,6 +72,10 @@ Connecticut: U.S. Geological Survey Scientific Investigations Report 2010–5052
 
 [Hill, R.A., Carlisle, D.M, Hawkins, C.P.  2013. Predicting thermal reference conditions in USA streams.  Freshwater Science 32(1): 39-55](https://www.journals.uchicago.edu/doi/10.1899/12-009.1)
 
+[Leppo, E. 2022. BCGcalc. Washington, DC: GitHub; accessed 2022 February 19.]( https://github.com/leppott/BCGcalc)
+[Leppo, E. 2022. BioMonTools. Washington, DC: GitHub; accessed 2022 February 19.]( https://github.com/leppott/BioMonTools)
+
+
 [Lovelace, R., Nowosad, J., Muenchow J. 2019.  Geocomputation with R.  CFC Press](https://geocompr.robinlovelace.net/index.html)
 
 [Olson, J.R. and Cormier, S.M. 2019.  Modeling spatial and temporal variation in natural background specific conductivity. Environmental Science and Technology.](https://dx.doi.org/10.1021/acs.est.8b06777)
@@ -83,4 +89,7 @@ Connecticut: U.S. Geological Survey Scientific Investigations Report 2010–5052
 [U.S. Environmental Protection Agency (EPA). 2012. The Economic Benefits of Protecting Healthy Watersheds Fact Sheet.  EPA 841-N-12-004. Office of Wetlands, Oceans, and Watersheds. Washington, D.C.](https://www.epa.gov/sites/default/files/2015-10/documents/economic_benefits_factsheet3.pdf)
 
 [U.S. Environmental Protection Agency (EPA). 2012.  Identifying and Protecting Healthy Watersheds:  Concepts, Assessments, and Management Approaches.  EPA 841-B-11-002. Office of Wetlands, Oceans, and Watersheds. Washington, D.C.](https://www.epa.gov/sites/default/files/2015-10/documents/hwi-watersheds-complete.pdf)
+
+
+
 

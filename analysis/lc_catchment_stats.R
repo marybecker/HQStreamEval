@@ -52,13 +52,13 @@ extract_lc <- function(r_file,poly,l_type){
 ### ct ff: https://clear.uconn.edu/projects/landscape/CT/forestfrag.htm ########
 
 # list files
-landcover<- "coreforest"
+landcover<- "dev"
 # grids    <- list.files(r_path, pattern = "*.tif$")
-lc_grids <- list.files(r_path, pattern = "forestfrag_*")
+lc_grids <- list.files(r_path, pattern = "landcover_*")
 
 # specify the classes to be re-classed
 # c_spec <- cbind(from = c(-Inf, 1, 10), to = c(7, 10, Inf), becomes = c(0, 1, 0))
-c_spec <- cbind(from = c(-Inf, 3, 6), to = c(3, 6, Inf), 
+c_spec <- cbind(from = c(-Inf, 1, 2), to = c(-Inf, 1, Inf), 
                 becomes = c(0, 1, 0))
 
 reclass_lc(lc_grids,c_spec,landcover)
