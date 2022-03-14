@@ -52,7 +52,7 @@ The anticipated application layout is a simple straight forward design with a sm
 ### D. Thematic representation
 ### E. User Interaction
 ### F. Aesthetics and design considerations
-![HQ Vulnerability](images/hq_water_vulnerability_map_mockup.jpg)
+![HQ Vulnerability](presentation/images/hq_water_vulnerability_map_mockup.jpg)
 ## III. Results
 ## IV. Discussion
 ## V. References / Anticipated References
