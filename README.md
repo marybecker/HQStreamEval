@@ -34,6 +34,7 @@ The model will be developed in several steps:
 **Biological Data Sets and Biological Condition Gradient Metric Calculations**
 
 Fish samples were collected by the CT DEEP Inland Fisheries and Ambient Monitoring and Assessment program using comparable methods during a May - October index period from 1988 – 2020 (Hagstrom et al. 1995, CT DEEP 2013). Crews sampled 10-20 mean stream widths with the average sample width being approximately 118 meters. Reach widths used in this dataset ranged from 25 to 500 meters. The type of gear that a crew used depended on the stream width. In small streams, crews typically sample with one backpack shocker. In medium-sized streams, they used 2 backpack shockers or 1 tote barge, and in large streams, crews sampled with multi-tote barges. All captured individuals were measured to the nearest centimeter and are identified to the species level. 
+
 Benthic macroinvertebrate samples were collected by the CT DEEP Ambient Monitoring and Assessment program from September through November using an 800-u m-mesh kick net from 1989 - 2020. A total of 2 meters squared of riffle habitat (12 kicks composited from multiple riffles of a stream reach) were sampled at each location. Samples were preserved in 70% ethyl alcohol and brought back to the laboratory for subsampling. A 200-organism subsample was taken using a random grid design (Plafkin et al. 1989) from each sampling location. Organisms were identified to the lowest practical taxon, generally species.
 
 Biological condition gradient models have been developed for both macro-invertebrate and fish communities in Connecticut (Gerritsen & Jessup 2007, Stamp & Gerritsen 2013).  The models incorporate multiple attribute decision criteria to assign stream to levels or tiers of the BCG and it can be directly applied to designation of multiple aquatic life uses in Connecticut’s water quality criteria and standards.  The models were run using the [BioMonTools](https://github.com/leppott/BioMonTools) and [BCGcalc](https://github.com/leppott/BCGcalc) packages written for the R statistical programming language (Leppo 2022a, Leppo 2022b).
@@ -50,7 +51,15 @@ The anticipated application is a web-based client-side mapping application prima
 The anticipated application layout is a simple straight forward design with a small top title and info bar and then the map filling the majority of the space.
 
 ### D. Thematic representation
+
+The mapping application will display the likelihood of stream network drainage catchments supporting high quality water and biological integrity.  The catchment data will be represented as polygons.  Drainage catchments are areas that drain to a particular stream segment.  Catchments are delineated based on the underlying stream network.  Use of drainage catchments convey the importance of land-water interactions that effect stream conditions.  The likelihood of a drainage catchment supporing high quality waters will be displayed using variable levels of opacity in shades of blue.  The more likely a catchment is predicted to support a high quality condition, the darker the blue color will be displayed.  Catchments with less than a 50% likelihood will be displayed as transparent.
+
 ### E. User Interaction
+
+The mapping application will allow the user to explore 'what-if' scenerios through an interaction with a slider bar.  The slider bar will indicate a level of human induced change that effects the condition of the stream.  For example, the model may indicate that the level of core forest contributes to the likelihood of high quality stream condition.  The slider bar would indicate a percent reduction of core forest from the original condition.  As the user changes the percent reduction using the slider bar the corresponding catchments would change in opacity based on model predictions for that change.  In this action the slider is displaying updated model predictions based on the changed input data.  Stream loss of high quality conditions with a reduction in core forest from the original condition will be indicated by highlighting the catchments that changed in red.
+
+User will also be able to hover over a catchment which will highlight the catchment of interest and display a popup giving the precise likelihood prediction for the given model inputs.
+
 ### F. Aesthetics and design considerations
 ![HQ Vulnerability](presentation/images/hq_water_vulnerability_map_mockup.jpg)
 ## III. Results
