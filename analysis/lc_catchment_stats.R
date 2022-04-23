@@ -34,7 +34,7 @@ extract_lc <- function(r_file,poly,l_type){
     lc <- rast(paste0(r_path,r_file[i])) #read in raster file
     # calc total cnt of pixels
     l_ex <- extract(lc, poly, fun=function(x,...)length(na.omit(x)),df=TRUE)
-    # calc sun of (0,1) pixels
+    # calc sum of (0,1) pixels
     ex <- extract(lc, poly, fun=sum, na.rm=TRUE, df=TRUE)
     df <- data.frame(poly$HydroID,l_ex[,2],ex[,2])
     df[,3] <- df[,3]-1
@@ -52,13 +52,21 @@ extract_lc <- function(r_file,poly,l_type){
 ### ct ff: https://clear.uconn.edu/projects/landscape/CT/forestfrag.htm ########
 
 # list files
-landcover<- "dev"
+landcover<- "openwater"
 # grids    <- list.files(r_path, pattern = "*.tif$")
 lc_grids <- list.files(r_path, pattern = "landcover_*")
 
 # specify the classes to be re-classed
-# c_spec <- cbind(from = c(-Inf, 1, 10), to = c(7, 10, Inf), becomes = c(0, 1, 0))
-c_spec <- cbind(from = c(-Inf, 1, 2), to = c(-Inf, 1, Inf), 
+#logical. If TRUE, the intervals are closed on the right (and open on the left). 
+#If FALSE they are open at the right and closed at the left. "open" means that 
+#the extreme value is *not* included in the interval. Thus, right-closed and 
+#left open is (0,1] = {x | 0 < x <= 1}. You can also close both sides with 
+#right=NA, that is only meaningful if you "from-to-becomes" classification 
+#with integers. For example to classify 1-5 -> 1, 6-10 -> 2, 11-15 -> 3. 
+#That may be easier to read and write than the equivalent 1-5 -> 1, 5-10 -> 2, 
+#10-15 -> 3 with right=TRUE and include.lowest=TRUE
+
+c_spec <- cbind(from = c(-Inf, -Inf, 1), to = c(-Inf, 1, Inf), 
                 becomes = c(0, 1, 0))
 
 reclass_lc(lc_grids,c_spec,landcover)

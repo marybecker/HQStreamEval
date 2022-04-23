@@ -50,3 +50,8 @@ catch_sf <- st_read("analysis/data/raw_spatial/vector/catchments_ct.shp")
 road_cr_sf <- st_read("C:/Users/deepuser/Documents/Projects/GISPrjs/StatewideData/stream_road_crossings/ct_detailed_flow_conte_road_crossings_2234.shp")
 
 catch_sf$pt_ctn <- lengths(st_intersects(catch_sf,road_cr_sf))
+
+road_catch <- st_drop_geometry(catch_sf)
+
+write.csv(road_catch[,c(8,10)],"analysis/data/road_crossings.csv",
+          row.names = FALSE)

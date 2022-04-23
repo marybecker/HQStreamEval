@@ -60,15 +60,20 @@ ggplot(raw_b, aes(lev1Name)) +
 raw_f$taxa <- "fish"
 raw_b$taxa <- "bug"
 raw <- rbind(raw_f[,c(1,2,5:11)], raw_b[,c(1,2,5,9:14)])
+raw$hq <- ifelse(raw$levPropNum < 2.5, 1, 0)
+raw <- merge(raw, hydro[,1:2], by = "staSeq")
+# write.csv(raw, "analysis/data/raw/bug_fish_bcg_030522.csv", row.names = FALSE)
 
 # high quality sites
-length(unique(raw_f[raw_f$levPropNum < 2.5,1]))
-length(unique(raw_b[raw_b$levPropNum < 2.5,1]))
+hq_fish <- unique(raw_f[raw_f$levPropNum < 2.5, 1])
+hq_bugs <- unique(raw_b[raw_b$levPropNum < 2.5, 1])
+length(hq_fish)
+length(hq_bugs)
 
 hq_sites <- data.frame(staSeq = unique(raw[raw$levPropNum < 2.5,1]))
 hq_sites <- data.frame(staSeq = unique(hq_sites))
-hq_sites$fish <- ifelse(hq_sites$staSeq %in% hq_fish$staSeq, 1, 0)
-hq_sites$bugs  <- ifelse(hq_sites$staSeq %in% hq_bugs$staSeq, 1, 0)
+hq_sites$fish <- ifelse(hq_sites$staSeq %in% hq_fish, 1, 0)
+hq_sites$bugs  <- ifelse(hq_sites$staSeq %in% hq_bugs, 1, 0)
 hq_sites <- merge(hq_sites, sites[,c(1:2,5:6)], by = "staSeq")
 hq_catch <- merge(hq_sites, hydro[,c(1:2)])
 hq_catch <- aggregate(staSeq ~ hydroID, hq_catch, FUN = "length")
