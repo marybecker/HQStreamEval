@@ -28,3 +28,6 @@ const map = new mapboxgl.Map({
     center: [-72.65, 41.55], // starting position
     zoom: 8.5 // starting zoom
 });
+
+
+

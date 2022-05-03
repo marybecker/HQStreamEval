@@ -4,6 +4,9 @@ library(reshape2)
 # read in data
 bcg <- read.csv("analysis/data/raw/bug_fish_bcg_030522.csv",header = TRUE)
 colnames(bcg)[which(colnames(bcg) =="hydroID")] <- "HydroID"
+catch <- st_read(dsn = "data/catchments.geojson",
+                 layer = "catchments")
+bcg <- bcg[bcg$HydroID%in%catch$HydroID,]
 lc_base <- "analysis/data/lc_results/"
 filenames <- list.files(path = lc_base, pattern = ".csv")
 lcd <- data.frame()
@@ -54,7 +57,9 @@ for(i in 1:dim(bcg_lc)[1]){
 }
 
 
-ggplot(bcg_lc, aes(as.factor(hq),sum_strdrf_pct)) +
+
+
+ggplot(bcg_lc, aes(as.factor(hq),coreforest)) +
   geom_boxplot()
 
 ggplot(bcg_lc, aes(as.factor(lcYr),levPropNum)) +
@@ -66,6 +71,21 @@ cor(bcg_lc[complete.cases(bcg_lc),13:24], method = "kendall")
 
 cor(bcg_lc[complete.cases(bcg_lc),13:24],
     bcg_lc[complete.cases(bcg_lc),9], method = "kendall")
+
+ggplot(bcg_lc, aes(as.factor(lcYr),levPropNum)) +
+  geom_boxplot()
+
+ggplot(bcg_lc, aes(as.factor(lev1Name), fragforest *100)) +
+  geom_boxplot()+
+  xlab('BCG') +
+  ylab('% Frag Forest') +
+  theme(panel.background = element_rect(fill = '#252525', colour = '#969696'),
+        plot.background = element_rect(fill = '#252525'),
+        panel.grid = element_blank(),
+        axis.text = element_text(colour = '#cccccc',size=rel(1.1)),
+        axis.title = element_text(color = '#cccccc',size=rel(1.1)),
+        title = element_text(color = '#cccccc',size=rel(1.5)),
+        legend.position = 'none')
 
 
 
