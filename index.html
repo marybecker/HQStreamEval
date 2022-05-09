@@ -10,49 +10,63 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-
+    <!-- Navigation Bar -->  
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-          <div class="navbar-brand">High Quality Water Vulnerability to Land Cover Change</div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+      <div class="container-fluid">
+        <div class="navbar-brand">
+          <h3>High Quality Water Vulnerability to Land Cover Change</h3>
+        </div>
+          <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
+            <img src="images/info-circle.svg" alt="Info" style="vertical-align: middle; height: 30px;">
           </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item">
-                <!-- <button class="btn btn-muted" type="button" data-bs-toggle="modal" data-bs-target="#infoModal"> -->
-                  <img src="images/info-circle.svg" alt="Info" style="vertical-align: middle; height: 30px;">
-                </button>
-                <!-- Modal -->
-                <!-- <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="infoModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        ...
-                      </div>
-                    </div>
+      </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="ModalLabel">High Quality Water Vulnerability</h5>
+              </div>
+              <div class="modal-body">
+                  <p> The objective of the clean water act is to 'restore and maintain the chemical, physical and
+                      biological integrity of the Nation's waters.'  However, much of the work conducted to date
+                      both around the country and in Connecticut has focused on restoring impaired waters.
+                      More recent work under EPA's <a href = "https://www.epa.gov/hwp">healthy watersheds program</a> and
+                      <a href = "https://portal.ct.gov/-/media/DEEP/water/water_quality_management/monitoringpubs/Bellucci-et-al-2011-Northeastern-Naturalist.pdf">in Connecticut</a>
+                      has begun to bring more emphasis on identifying and protecting high quality waters.
+                      These efforts are needed as <a href = "https://marybecker.github.io/Biointegrity/">preliminary work in Connecticut</a>
+                      noted the possible reduction of taxa highly sensitive to pollution (BCG 2 - Figure 1)
+                      at long-term sentinel stream monitoring stations over the past ~ 30 years. </p>
+                  <img src="images/SagesRivine.png" class="img-fluid" alt="Sages Ravine">
+                  <div class="caption">
+                      Sages Ravine, Salisbury CT
                   </div>
-                </div> -->
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search Placeholder" aria-label="Search">
-              <button class="btn btn-outline-info" type="submit">Search</button>
-            </form>
+                  <br>
+                  <p><a href="https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/1051-0761%282006%29016%5B1251%3ATBCGAD%5D2.0.CO%3B2">
+                      The Biological Condition Gradient (BCG)</a> is a conceptual model that describes changes
+                      in aquatic communities and provides a more refined way of assigning stream health than the
+                      traditional pass/fail approach. The additional fine tuning allows us to identify minimally
+                      stressed healthy streams with sensitive taxa found only under least disturbed conditions
+                      (e.g. BCG tiers 1 and 2).
+                  <a> The map identifies the locations of minimally stressed streams and their upstream drainage
+                      systems that support and protect critical habitat for sensitive and native species.  
+                      Additional information on this project and the data included in the map can be found
+                      <a href="https://github.com/marybecker/HighQualityStreams/blob/main/notebooks/HealthyWaters.ipynb">
+                          https://github.com/marybecker/HighQualityStreams/</a>.
+              </div>
           </div>
-        </div>
-      </nav>
-      
-        <div id='map'>
-          <div id='slider'>
-            <input id='chgSlide' type="range" min="0" max="20" value="0" step="1" /><br>
-            <span id="range">0 - 20</span>
-          </div>
-        </div>
+      </div>
+    </div>
+
+    <!-- Map -->  
+    <div id='map'>
+      <div id='slider'>
+        <input id='chgSlide' type="range" min="0" max="20" value="0" step="1" /><br>
+        <span id="reduction">0% Core Forest Reduction in Drainage Basin</span>
+      </div>
+    </div>
 
         
 

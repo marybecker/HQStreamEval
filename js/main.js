@@ -105,7 +105,8 @@ function addLayer(data){
                 '#70a494',
                 1,
                 '#008080',
-            ]
+            ],
+            'fill-opacity': 0.7
           }
     });
 
@@ -118,12 +119,12 @@ function addLayer(data){
 function addInteraction(layer){
 
     document.getElementById('slider').addEventListener('input', (event) => {
-        const year = event.target.value;
-        if (year == 0) {
+        const reduc = event.target.value;
+        if (reduc == 0) {
             r = 'hqp'
         }
         else {
-            r = 'cfr_' + year
+            r = 'cfr_' + reduc
         }
         console.log(r);
         // update the map
@@ -141,8 +142,8 @@ function addInteraction(layer){
         ]);
 
 
-        // // update text in the UI
-        // document.getElementById('active-year').innerText = year;
+        // update text in the UI
+        document.getElementById('reduction').innerText = reduc + '% Core Forest Reduction in Drainage Basin';
     });
 }
 
