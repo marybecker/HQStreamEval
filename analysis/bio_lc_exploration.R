@@ -1,5 +1,6 @@
 library(ggplot2)
 library(reshape2)
+library(sf)
 
 # read in data
 bcg <- read.csv("analysis/data/raw/bug_fish_bcg_030522.csv",header = TRUE)

@@ -12,3 +12,10 @@ body {
     bottom: 0;
     width: 100%;
 }
+
+#slider {
+    position: absolute;
+    right: 1em;
+    bottom: 10em;
+    z-index: 1500;
+}
