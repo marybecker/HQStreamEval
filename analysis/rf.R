@@ -29,7 +29,7 @@ hqpa <- as.factor(train[, 'hq'])
 # hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt, 
 #                      ntree=250)
 
-hqrf <- randomForest(train[,c(11,14:17,19:20)],hqpa)
+hqrf <- randomForest(train[,c(12,15:17,19:20)],hqpa)
 hqrf
 varImpPlot(hqrf)
 
