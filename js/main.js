@@ -29,6 +29,10 @@ const map = new mapboxgl.Map({
     zoom: 8.5 // starting zoom
 });
 
+map.fitBounds([[-73.727775, 40.980144], [-71.786994, 42.050587]], 
+    {padding: {top: 100, bottom:10, left: 5, right: 5}});
+
+
 // when the map is done loading
 map.on('load', () => {
 
@@ -111,13 +115,13 @@ function addLayer(data){
     });
 
     addInteraction('catLy')
+    addPopup('catLy')
 
 }
 
 
 
 function addInteraction(layer){
-
     document.getElementById('slider').addEventListener('input', (event) => {
         const reduc = event.target.value;
         if (reduc == 0) {
@@ -127,6 +131,7 @@ function addInteraction(layer){
             r = 'cfr_' + reduc
         }
         console.log(r);
+
         // update the map
         map.setPaintProperty(layer, 'fill-color', 
         [
@@ -141,9 +146,42 @@ function addInteraction(layer){
             '#008080',
         ]);
 
-
         // update text in the UI
         document.getElementById('reduction').innerText = reduc + '% Core Forest Reduction in Drainage Basin';
+    });
+}
+
+function addPopup(layer){
+
+    // Create a popup, but don't add it to the map yet.
+    const popup = new mapboxgl.Popup({
+        className: 'sitePopup',
+        closeButton: false,
+        closeOnClick: false
+    });
+
+    map.on('mousemove', layer, function(e) {
+
+        let p = JSON.parse(e.features[0].properties.pred)
+        console.log(p.hqp)
+
+        const popupInfo =   p.hqp;
+
+        // When a hover event occurs on a feature,
+        // open a popup at the location of the hover, with description
+        // HTML from the click event's properties.
+        popup.setLngLat(e.lngLat).setHTML(popupInfo).addTo(map);
+    });
+
+    // Change the cursor to a pointer when the mouse is over.
+    map.on('mousemove', layer, () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change the cursor back to a pointer when it leaves the point.
+    map.on('mouseleave', layer, () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
     });
 }
 
