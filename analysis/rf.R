@@ -33,6 +33,8 @@ hqrf <- randomForest(train[,c(12,15:17,19:20)],hqpa)
 hqrf
 varImpPlot(hqrf)
 
+partialPlot(hqrf, train, coreforest)
+
 # hqpd <- as.data.frame(predict(hqrf, test,type="prob"))
 hqpd <- as.data.frame(predict(hqrf, test))
 
