@@ -33,6 +33,8 @@ map.fitBounds([[-73.727775, 40.980144], [-71.786994, 42.050587]],
     {padding: {top: 100, bottom:10, left: 5, right: 5}});
 
 
+
+
 // when the map is done loading
 map.on('load', () => {
 
