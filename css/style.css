@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #f7f7f7 ;
+    /* background-color: #f7f7f7 ; */
 }
 
 #map {
@@ -12,9 +12,25 @@ body {
     width: 100%;
 }
 
-#slider {
+#console {
     position: absolute;
-    right: 1em;
-    bottom: 10em;
-    z-index: 1500;
+    width: 300px;
+    left: 1em;
+    top: 3em;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #333333;
+    color: #f7f7f7;
+    opacity: 90%;
+}
+
+.box {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0 10px 4px 0;
+}
+
+#loss {
+    font-weight: bolder;
 }

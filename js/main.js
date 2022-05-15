@@ -1,6 +1,6 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFyeS1iZWNrZXIiLCJhIjoiY2p3bTg0bDlqMDFkeTQzcDkxdjQ2Zm8yMSJ9._7mX0iT7OpPFGddTDO5XzQ';
 
-const map = new mapboxgl.Map({
+var map = new mapboxgl.Map({
     container: 'map', // container ID
     style: {
         'version': 8,
@@ -40,9 +40,9 @@ map.on('load', () => {
     d3.json('./data/catchments_hq.geojson').then((data) => {
         // when loaded
 
-        const catchmentData = d3.json('./data/catchments_hq.geojson');
-        const predictionData = d3.json('./data/pred_hq.json');
-        const stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
+        var catchmentData = d3.json('./data/catchments_hq.geojson');
+        var predictionData = d3.json('./data/pred_hq.json');
+        var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
 
         Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addLayer);
 
@@ -114,21 +114,22 @@ function addLayer(data){
           }
     });
 
-    addInteraction('catLy')
-    addPopup('catLy')
-
+    addInteraction('catLy', cat)
+    addPopup('catLy', 'hqp') //Popup on load before interaction
 }
 
 
 
-function addInteraction(layer){
+function addInteraction(layer, data){
     document.getElementById('slider').addEventListener('input', (event) => {
-        const reduc = event.target.value;
-        if (reduc == 0) {
+        var reduction = event.target.value;
+        
+        // get the amount of coreforest reduction
+        if (reduction == 0) {
             r = 'hqp'
         }
         else {
-            r = 'cfr_' + reduc
+            r = 'cfr_' + reduction
         }
         console.log(r);
 
@@ -146,27 +147,33 @@ function addInteraction(layer){
             '#008080',
         ]);
 
-        // update text in the UI
-        document.getElementById('reduction').innerText = reduc + '% Core Forest Reduction in Drainage Basin';
+        // update text in the slider UI
+        document.getElementById('reduction').innerText = reduction + '% Core Forest Reduction in Drainage Basin';
+        
+        s = getStreamLength(data, 'hqp') - getStreamLength(data, r)
+        document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
+        console.log(s);
+
+        addPopup(layer, r)
     });
 }
 
-function addPopup(layer){
+function addPopup(layer, n){
 
     // Create a popup, but don't add it to the map yet.
-    const popup = new mapboxgl.Popup({
+    var popup = new mapboxgl.Popup({
         className: 'sitePopup',
         closeButton: false,
         closeOnClick: false
-    });
+    }); 
 
     map.on('mousemove', layer, function(e) {
 
-        let p = JSON.parse(e.features[0].properties.pred)
-        console.log(p.hqp)
+        var p = JSON.parse(e.features[0].properties.pred)
+        console.log(p[n])
 
-        const popupInfo =   p.hqp;
-
+        var popupInfo =   p[n];
+        
         // When a hover event occurs on a feature,
         // open a popup at the location of the hover, with description
         // HTML from the click event's properties.
@@ -183,5 +190,18 @@ function addPopup(layer){
         map.getCanvas().style.cursor = '';
         popup.remove();
     });
+}
+
+function getStreamLength(data, p){
+    var sum_length = 0;
+    for(var i=0; i<data['features'].length; i++){
+        var j = data['features'][i]['properties']['pred'][p];
+        var l = data['features'][i]['properties']['pred']['cat_length_km'];
+        
+        if(j > 0.5 && sum_length == 0){sum_length = l}
+        else if(j > 0.5){sum_length = sum_length + l}
+        
+    }
+    return sum_length;
 }
 

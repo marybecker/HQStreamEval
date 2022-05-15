@@ -49,6 +49,9 @@ dim(hq_test_pd[hq_test_pd$correct == TRUE & hq_test_pd$hq ==1,])[1]/ dim(hq_test
 
 catch <- st_read(dsn = "data/catchments.geojson",
                  layer = "catchments")
+catch_length <- read.csv("analysis/data/drainage_area_length.csv",
+                         header = TRUE)
+colnames(catch_length) <- c("HydroID", "cat_area_sqkm", "cat_length_km")
 lc_base <- "analysis/data/lc_results/"
 filenames <- list.files(path = lc_base, pattern = ".csv")
 lcd <- data.frame()
@@ -74,6 +77,8 @@ lc_stc <- c("HydroID","area_sqkm", "length_km", "sum_strdrf_pct",
 
 lcd <- lcd[ , lc_stc]
 colnames(lcd)[7:12] <- lc_typ
+
+lcd <- merge(lcd, catch_length, by = "HydroID")
 
 lcd <- lcd[which(lcd$HydroID %in% catch$HydroID), ]
 lcd <- lcd[complete.cases(lcd), ]
@@ -115,8 +120,8 @@ write(lcdp_hq_json, "data/pred_hq.json")
 
 
 
-sum(lcdp[lcdp$hqp >= 0.5, c("length_km")])
-sum(lcdp[lcdp$cfr_2 >= 0.5, c("length_km")])
-sum(lcdp[lcdp$cfr_10 >= 0.5, c("length_km")])
+sum(lcdp[lcdp$hqp >= 0.5, c("cat_length_km")])
+sum(lcdp[lcdp$cfr_2 >= 0.5, c("cat_length_km")])
+sum(lcdp[lcdp$cfr_10 >= 0.5, c("cat_length_km")])
 
 
