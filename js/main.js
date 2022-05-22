@@ -143,9 +143,11 @@ function addInteraction(layer, data){
             ['number', ['get',r, ['get','pred']]],
             0,
             '#ca562c',
+            0.25,
+            '#de8a5a',
             0.5,
             '#70a494',
-            1,
+            0.75,
             '#008080',
         ]);
 
@@ -156,11 +158,11 @@ function addInteraction(layer, data){
         document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
         console.log(s);
 
-        addPopup(layer, r)
+        addPopup(layer, r, reduction)
     });
 }
 
-function addPopup(layer, n){
+function addPopup(layer, n, reduction){
 
     // Create a popup, but don't add it to the map yet.
     var popup = new mapboxgl.Popup({
@@ -169,12 +171,26 @@ function addPopup(layer, n){
         closeOnClick: false
     }); 
 
+    function getR(reduction){
+        if(n == 'hqp'){return '0'}
+        else{return reduction}
+    }
+
+    var r = getR(reduction)
+
     map.on('mousemove', layer, function(e) {
 
         var p = JSON.parse(e.features[0].properties.pred)
-        console.log(p[n])
+        console.log(n);
+        console.log(p[n]);
 
-        var popupInfo =   p[n];
+        s = getStreamConditionTxt(p[n])
+        console.log(s);
+
+        
+        
+
+        var popupInfo =   'There is a '+ s + ' probability of loss in hiqh quality stream condition with ' + r + '% reduction';
         
         // When a hover event occurs on a feature,
         // open a popup at the location of the hover, with description
@@ -205,5 +221,12 @@ function getStreamLength(data, p){
         
     }
     return sum_length;
+}
+
+function getStreamConditionTxt(data){
+    if(data < 0.25){return 'very high'}
+    if(data > 0.25 && data < 0.5){return 'high'}
+    if(data > 0.5 && data < 0.75){return 'low'}
+    if(data > 0.75){return 'very low'}
 }
 
