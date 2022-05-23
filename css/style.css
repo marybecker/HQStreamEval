@@ -19,6 +19,7 @@ body {
     top: 3em;
     margin: 10px;
     padding: 10px 20px;
+    border: 2px solid #ca562c;
     background-color: #333333;
     color: #f7f7f7;
     opacity: 90%;
@@ -34,3 +35,14 @@ body {
 #loss {
     font-weight: bolder;
 }
+
+.mapboxgl-popup-content {
+    width: 5 em;
+    height: max-content;
+    border: 2px solid #ca562c;
+    background-color: #333333;
+    color: #f7f7f7;
+    opacity: 80%;
+    border-radius: 18px;
+    margin-bottom: 3px;
+  }

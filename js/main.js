@@ -187,9 +187,6 @@ function addPopup(layer, n, reduction){
         s = getStreamConditionTxt(p[n])
         console.log(s);
 
-        
-        
-
         var popupInfo =   'There is a '+ s + ' probability of loss in hiqh quality stream condition with ' + r + '% reduction';
         
         // When a hover event occurs on a feature,
