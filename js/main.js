@@ -117,7 +117,7 @@ function addLayer(data){
     });
 
     addInteraction('catLy', cat)
-    addPopup('catLy', 'hqp') //Popup on load before interaction
+    addPopup('catLy', 0) //Popup on load before interaction
 }
 
 
@@ -127,13 +127,9 @@ function addInteraction(layer, data){
         var reduction = event.target.value;
         
         // get the amount of coreforest reduction
-        if (reduction == 0) {
-            r = 'hqp'
-        }
-        else {
-            r = 'cfr_' + reduction
-        }
-        console.log(r);
+        if (reduction == 0) {r = 'hqp'}
+        else {r = 'cfr_' + reduction}
+        // console.log(r);
 
         // update the map
         map.setPaintProperty(layer, 'fill-color', 
@@ -151,47 +147,49 @@ function addInteraction(layer, data){
             '#008080',
         ]);
 
+
         // update text in the slider UI
         document.getElementById('reduction').innerText = reduction + '% Core Forest Reduction in Drainage Basin';
         
         s = getStreamLength(data, 'hqp') - getStreamLength(data, r)
         document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
-        console.log(s);
-
-        addPopup(layer, r, reduction)
+        // console.log(s);
+        
+        addPopup(layer, reduction)
+        
     });
 }
 
-function addPopup(layer, n, reduction){
-
-    // Create a popup, but don't add it to the map yet.
+function addPopup(layer, reduction){
+    
+        // Create a popup, but don't add it to the map yet.
     var popup = new mapboxgl.Popup({
         className: 'sitePopup',
         closeButton: false,
         closeOnClick: false
-    }); 
+    });
 
-    function getR(reduction){
-        if(n == 'hqp'){return '0'}
-        else{return reduction}
-    }
-
-    var r = getR(reduction)
+    // get the amount of coreforest reduction
+    if (reduction == 0) {r = 'hqp'}
+    if (reduction > 0) {r = 'cfr_' + reduction}
+    console.log(r);
+    
 
     map.on('mousemove', layer, function(e) {
-
         var p = JSON.parse(e.features[0].properties.pred)
-        console.log(n);
-        console.log(p[n]);
+        // console.log(p);
+       
+        console.log(p[r]);
 
-        s = getStreamConditionTxt(p[n])
-        console.log(s);
+        s = getStreamConditionTxt(p[r])
+        // console.log(s);
 
-        var popupInfo =   'There is a '+ s + ' probability of loss in hiqh quality stream condition with ' + r + '% reduction';
+        var popupInfo =   `There is a ${s} probability of loss in hiqh quality stream condition with ${reduction}% reduction`;
+        console.log(popupInfo);//duplicating info for each event.  Need to figure out how to remove
         
         // When a hover event occurs on a feature,
         // open a popup at the location of the hover, with description
-        // HTML from the click event's properties.
+        // HTML from the hover event's properties.
         popup.setLngLat(e.lngLat).setHTML(popupInfo).addTo(map);
     });
 
