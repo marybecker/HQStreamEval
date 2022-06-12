@@ -31,48 +31,39 @@ var map = new mapboxgl.Map({
 
 map.fitBounds([[-73.727775, 40.980144], [-71.786994, 42.050587]], 
     {padding: {top: 100, bottom:10, left: 5, right: 5}});
-
-
-
-
-// when the map is done loading
-map.on('load', () => {
-
-    // request JSON data
-    d3.json('./data/catchments_hq.geojson').then((data) => {
-        // when loaded
-
-        var catchmentData = d3.json('./data/catchments_hq.geojson');
-        var predictionData = d3.json('./data/pred_hq.json');
-        var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
-
-        Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addLayer);
-
-    });
-
+// Create a popup, but don't add it to the map yet.
+var popup = new mapboxgl.Popup({
+    className: 'sitePopup',
+    closeButton: false,
+    closeOnClick: false
 });
 
-function addLayer(data){
+// when the base map is done loading
+map.on('load', () => {
+    // async load the JSON data
+    var catchmentData = d3.json('./data/catchments_hq.geojson');
+    var predictionData = d3.json('./data/pred_hq.json');
+    var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
+    Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addMapLayers);
+});
+
+function addMapLayers(data){
+    //data = [catchmentData, predictionData, stateBoundaryData]; from line 47
     var cat   = data[0];
     var pred  = data[1];
     var bound = data[2];
     
-    //cat['features'][i]['properties']['HydroID'] //get one data element
-    //pred[j]['HydroID] //get one data element
-
     var k = 'HydroID';
     var cat_idx = {};
     for(var i=0; i<cat['features'].length; i++){
         var k_a = cat['features'][i]['properties'][k]; //get the hydro_id key for A[i]
-        cat_idx[k_a] = i;                //key inserted into {} assign value i
+        cat_idx[k_a] = i;                              //key inserted into {} assign value i
     }
-    for(var j=0; j<pred.length; j++){
-        //add in check for existence or duplication with if/else...
-        var k_b = pred[j][k];            //get the hydro_id key for B[j]
-        cat['features'][cat_idx[k_b]]['properties']['pred'] = pred[j]; //insert B[j] into A[i]
+    for(var j=0; j<pred.length; j++){                                  //add in check for existence or duplication with if/else...
+        var k_b = pred[j][k];                                          //get the hydro_id key for B[j]
+        cat['features'][cat_idx[k_b]]['properties']['pred'] = pred[j]; //insert B[j] into A[i] #check this for string?
     }
-    console.log(cat);
-
+    //console.log(cat);
     map.addSource('cat', {
         type: 'geojson',
         data: cat
@@ -95,7 +86,6 @@ function addLayer(data){
         }
     });
 
-
     map.addLayer({
         'id': 'catLy',
         'type': 'fill',
@@ -116,20 +106,19 @@ function addLayer(data){
           }
     });
 
-    addInteraction('catLy', cat)
+    addSliderInteraction('catLy', cat)
     addPopup('catLy', 0) //Popup on load before interaction
 }
 
 
 
-function addInteraction(layer, data){
+function addSliderInteraction(layer, data){
     document.getElementById('slider').addEventListener('input', (event) => {
         var reduction = event.target.value;
         
         // get the amount of coreforest reduction
         if (reduction == 0) {r = 'hqp'}
         else {r = 'cfr_' + reduction}
-        // console.log(r);
 
         // update the map
         map.setPaintProperty(layer, 'fill-color', 
@@ -153,37 +142,22 @@ function addInteraction(layer, data){
         
         s = getStreamLength(data, 'hqp') - getStreamLength(data, r)
         document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
-        // console.log(s);
         
-        addPopup(layer, reduction)
+        addPopup(layer, reduction) 
         
     });
 }
 
 function addPopup(layer, reduction){
-    
-        // Create a popup, but don't add it to the map yet.
-    var popup = new mapboxgl.Popup({
-        className: 'sitePopup',
-        closeButton: false,
-        closeOnClick: false
-    });
 
     // get the amount of coreforest reduction
     if (reduction == 0) {r = 'hqp'}
-    if (reduction > 0) {r = 'cfr_' + reduction}
-    console.log(r);
+    if (reduction > 0)  {r = 'cfr_' + reduction}
     
 
-    map.on('mousemove', layer, function(e) {
+    map.on('mouseover', layer, function(e) {
         var p = JSON.parse(e.features[0].properties.pred)
-        // console.log(p);
-       
-        console.log(p[r]);
-
         s = getStreamConditionTxt(p[r])
-        // console.log(s);
-
         var popupInfo =   `There is a ${s} probability of loss in hiqh quality stream condition with ${reduction}% reduction`;
         console.log(popupInfo);//duplicating info for each event.  Need to figure out how to remove
         
@@ -194,9 +168,9 @@ function addPopup(layer, reduction){
     });
 
     // Change the cursor to a pointer when the mouse is over.
-    map.on('mousemove', layer, () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
+    // map.on('mousemove', layer, () => {
+    //     map.getCanvas().style.cursor = 'pointer';
+    // });
 
     // Change the cursor back to a pointer when it leaves the point.
     map.on('mouseleave', layer, () => {
