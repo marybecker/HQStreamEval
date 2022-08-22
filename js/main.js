@@ -96,11 +96,11 @@ function addMapLayers(data){
                 ['linear'],
                 ['number', ['get','hqp', ['get','pred']]],
                 0,
-                '#ca562c',
+                '#df5a00',
                 0.5,
-                '#70a494',
+                '#3f7ea6',
                 1,
-                '#008080',
+                '#023059',
             ],
             'fill-opacity': 0.7
           }
