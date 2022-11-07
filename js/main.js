@@ -17,7 +17,7 @@ var map = new mapboxgl.Map({
         },
         'layers': [
             {
-                'id': 'simple-tiles',
+                'id': 'nhd',
                 'type': 'raster',
                 'source': 'raster-tiles',
                 'minzoom': 0,
@@ -29,14 +29,61 @@ var map = new mapboxgl.Map({
     zoom: 8.5 // starting zoom
 });
 
+function updateBaseLyr(layerList, inputs){
+    for (const input of inputs) {
+        input.onclick = (layer) => {
+            const layerId = layer.target.id;
+            if (layerId == 'nhd'){map.setStyle({
+                'version': 8,
+                'sources': {
+                    'raster-tiles': {
+                        'type': 'raster',
+                        'tiles': [
+                            'https://basemap.nationalmap.gov/arcgis/rest/services/USGSHydroCached/MapServer/tile/{z}/{y}/{x}'
+                        ],
+                        'tileSize': 256,
+                        'attribution':
+                            'USGS The National Map: National Hydrography Dataset'
+                    }
+                },
+                'layers': [
+                    {
+                        'id': 'nhd',
+                        'type': 'raster',
+                        'source': 'raster-tiles',
+                        'minzoom': 0,
+                        'maxzoom': 17
+                    }
+                ]
+            })}
+            else {map.setStyle('mapbox://styles/mapbox/' + layerId);}
+        };
+    }
+}
+
+// const layerList = document.getElementById('menu');
+// const inputs = layerList.getElementsByTagName('input');
+// updateBaseLyr(layerList, inputs);
+
+
+
 map.fitBounds([[-73.727775, 40.980144], [-71.786994, 42.050587]], 
     {padding: {top: 100, bottom:10, left: 5, right: 5}});
 // Create a popup, but don't add it to the map yet.
+
 var popup = new mapboxgl.Popup({
     className: 'sitePopup',
     closeButton: false,
     closeOnClick: false
 });
+
+// map.on('style.load', function () {
+//     // Triggered when `setStyle` is called.
+//     var catchmentData = d3.json('./data/catchments_hq.geojson');
+//     var predictionData = d3.json('./data/pred_hq.json');
+//     var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
+//     Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addMapLayers);
+// });
 
 // when the base map is done loading
 map.on('load', () => {
@@ -117,8 +164,8 @@ function addSliderInteraction(layer, data){
         var reduction = event.target.value;
         
         // get the amount of coreforest reduction
-        if (reduction == 0) {r = 'hqp'}
-        else {r = 'cfr_' + reduction}
+        if (reduction == 0) {var r = 'hqp'}
+        else {var r = 'cfr_' + reduction}
 
         // update the map
         map.setPaintProperty(layer, 'fill-color', 
