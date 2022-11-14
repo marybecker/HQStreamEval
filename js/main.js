@@ -29,43 +29,6 @@ var map = new mapboxgl.Map({
     zoom: 8.5 // starting zoom
 });
 
-function updateBaseLyr(layerList, inputs){
-    for (const input of inputs) {
-        input.onclick = (layer) => {
-            const layerId = layer.target.id;
-            if (layerId == 'nhd'){map.setStyle({
-                'version': 8,
-                'sources': {
-                    'raster-tiles': {
-                        'type': 'raster',
-                        'tiles': [
-                            'https://basemap.nationalmap.gov/arcgis/rest/services/USGSHydroCached/MapServer/tile/{z}/{y}/{x}'
-                        ],
-                        'tileSize': 256,
-                        'attribution':
-                            'USGS The National Map: National Hydrography Dataset'
-                    }
-                },
-                'layers': [
-                    {
-                        'id': 'nhd',
-                        'type': 'raster',
-                        'source': 'raster-tiles',
-                        'minzoom': 0,
-                        'maxzoom': 17
-                    }
-                ]
-            })}
-            else {map.setStyle('mapbox://styles/mapbox/' + layerId);}
-        };
-    }
-}
-
-// const layerList = document.getElementById('menu');
-// const inputs = layerList.getElementsByTagName('input');
-// updateBaseLyr(layerList, inputs);
-
-
 
 map.fitBounds([[-73.727775, 40.980144], [-71.786994, 42.050587]], 
     {padding: {top: 100, bottom:10, left: 5, right: 5}});
@@ -77,21 +40,14 @@ var popup = new mapboxgl.Popup({
     closeOnClick: false
 });
 
-// map.on('style.load', function () {
-//     // Triggered when `setStyle` is called.
-//     var catchmentData = d3.json('./data/catchments_hq.geojson');
-//     var predictionData = d3.json('./data/pred_hq.json');
-//     var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
-//     Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addMapLayers);
-// });
-
 // when the base map is done loading
 map.on('load', () => {
     // async load the JSON data
     var catchmentData = d3.json('./data/catchments_hq.geojson');
     var predictionData = d3.json('./data/pred_hq.json');
     var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
-    Promise.all([catchmentData, predictionData, stateBoundaryData]).then(addMapLayers);
+    var predictionLengthData = d3.json('./data/length_hq.json')
+    Promise.all([catchmentData, predictionData, stateBoundaryData, predictionLengthData]).then(addMapLayers);
 });
 
 function addMapLayers(data){
@@ -99,6 +55,9 @@ function addMapLayers(data){
     var cat   = data[0];
     var pred  = data[1];
     var bound = data[2];
+    var lpred = data[3];
+    console.log(lpred);
+    //console.log(lpred['HydroID']['']);
     
     var k = 'HydroID';
     var cat_idx = {};
@@ -110,7 +69,12 @@ function addMapLayers(data){
         var k_b = pred[j][k];                                          //get the hydro_id key for B[j]
         cat['features'][cat_idx[k_b]]['properties']['pred'] = pred[j]; //insert B[j] into A[i] #check this for string?
     }
-    //console.log(cat);
+
+    for(var j=0; j<lpred.length; j++){                                  //add in check for existence or duplication with if/else...
+        var k_b = lpred[j][k];                                          //get the hydro_id key for B[j]
+        cat['features'][cat_idx[k_b]]['properties']['lpred'] = lpred[j]; //insert B[j] into A[i] #check this for string?
+    }
+    console.log(cat);
     map.addSource('cat', {
         type: 'geojson',
         data: cat
@@ -173,19 +137,11 @@ function addSliderInteraction(layer, data){
             'interpolate',
             ['linear'],
             ['number', ['get',r, ['get','pred']]],
-            // 0,
-            // '#ca562c',
-            // 0.25,
-            // '#de8a5a',
-            // 0.5,
-            // '#70a494',
-            // 0.75,
-            // '#008080',
             0,
             '#df5a00',
             0.25,
             '#ff9528',
-            0.5,
+            0.6,
             '#3f7ea6',
             0.75,
             '#023059',
@@ -198,13 +154,11 @@ function addSliderInteraction(layer, data){
         s = getStreamLength(data, 'hqp') - getStreamLength(data, r)
         document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
         
-        addPopup(layer, reduction) 
-        
+        addPopup(layer, reduction)
     });
 }
 
 function addPopup(layer, reduction){
-
     // get the amount of coreforest reduction
     if (reduction == 0) {r = 'hqp'}
     if (reduction > 0)  {r = 'cfr_' + reduction}
@@ -212,8 +166,12 @@ function addPopup(layer, reduction){
 
     map.on('mouseover', layer, function(e) {
         var p = JSON.parse(e.features[0].properties.pred)
-        s = getStreamConditionTxt(p[r])
-        var popupInfo =   `There is a ${s} probability of loss in hiqh quality stream condition with ${reduction}% reduction`;
+        var s = getStreamConditionTxt(p[r])
+        var l = JSON.parse(e.features[0].properties.lpred)
+        var lr = 'l_cfr_' + reduction;
+        var ll = Math.round(l['l_cfr_0'] - l[lr]);
+        console.log(l['l_cfr_0'] - l[lr]);
+        var popupInfo =   `There is a ${s} probability that this stream segment is hiqh quality and ${ll} km lost in the upstream drainage basin with ${reduction}% reduction`;
         console.log(popupInfo);//duplicating info for each event.  Need to figure out how to remove
         
         // When a hover event occurs on a feature,
@@ -248,9 +206,9 @@ function getStreamLength(data, p){
 }
 
 function getStreamConditionTxt(data){
-    if(data < 0.25){return 'very high'}
-    if(data > 0.25 && data < 0.5){return 'high'}
-    if(data > 0.5 && data < 0.75){return 'low'}
-    if(data > 0.75){return 'very low'}
+    if(data < 0.25){return 'very low'}
+    if(data > 0.25 && data < 0.5){return 'low'}
+    if(data > 0.5 && data < 0.75){return 'high'}
+    if(data > 0.75){return 'very high'}
 }
 
