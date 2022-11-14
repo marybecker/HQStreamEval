@@ -5,53 +5,20 @@
     <title>Waters at Risk</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <!-- request styles -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
      <!--Navigation Bar-->
      <nav class="navbar navbar-expand-md navbar-custom fixed-top border border-dark">
-
-<!--         <div class="logo">-->
-<!--             <img id="logo-icon" src="images/deep_logo.png" style="width:25%">-->
-<!--         </div>-->
          <div class="navbar-title">Waters at Risk:</div>
          <div class="navbar-subtitle"> Implications of Core Forest Reduction in High Quality Stream Drainages</div>
          <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
              <img src="images/info-circle.svg" alt="Info" style="vertical-align: middle;">
          </button>
-         <div id="menu" class="btn-group dropdown">
-         <button class="btn btn-dark btn-sm" role="button" data-bs-toggle="dropdown" id="navbarDropdown">
-             <img src="images/stack.svg" alt="Info" style="vertical-align: middle;"
-                  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-         </button>
-         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-             <li>
-                 <input id="nhd" type="radio" name="rtoggle" value="nhd" checked="checked">
-                 <label for="nhd">nhd</label>
-             </li>
-             <li>
-                 <input id="satellite-v9" type="radio" name="rtoggle" value="satellite">
-                 <label for="satellite-v9">satellite</label>
-             </li>
-             <li><a class="dropdown-item" href="#">Another action</a></li>
-             <li><hr class="dropdown-divider"></li>
-             <li><a class="dropdown-item" href="#">Something else here</a></li>
-         </ul>
-         </div>
      </nav>
-
-
-<!--     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">-->
-<!--      <div class="container-fluid">-->
-<!--          <span class="navbar-text text-light mb-0 h2">Vulnerable Waters</span>-->
-<!--          <span class="navbar-text text-light mb-0">Implications of Watershed Core Forest Reductions</span>-->
-<!--          <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#Modal">-->
-<!--            <img src="images/info-circle.svg" alt="Info" style="vertical-align: middle; height: 30px;">-->
-<!--          </button>-->
-<!--      </div>-->
-<!--    </nav>-->
 
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -59,6 +26,7 @@
           <div class="modal-content">
               <div class="modal-header">
                   <h5 class="modal-title" id="ModalLabel">High Quality Water Vulnerability</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                   <p> The objective of the clean water act is to 'restore and maintain the chemical, physical and
@@ -108,40 +76,30 @@
 
      <div id="legendCollaspe" class="collapse  d-lg-block">
      <div id ="console" class = "container-fluid">
-<!--      <h3>High Quality Streams</h3>-->
-<!--      <h5>Vulnerability to Watershed Reduction of Core Forest-->
-<!--        <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#Modal">-->
-<!--        <img src="images/info-circle.svg" alt="Info" style="vertical-align: middle; height: 20px;">-->
-<!--        </button>-->
-<!--      </h5>-->
-
-
-
-          <div class="row">
+         <div class="row">
             <h5> Predicted Stream Condition </h5>
-          </div>
-          <div class="row mt-2">
-            <div class="col-1"><div class="box" style="background:#023059"></div></div>
-            <div class="col-9"><label>High Quality Stream</label></div>
-          </div>
-          <div class="row">
+         </div>
+         <div class="row mt-2">
+             <div class="col-1"><div class="box" style="background:#023059"></div></div>
+             <div class="col-9"><label>High Quality Stream</label></div>
+         </div>
+         <div class="row">
             <div class="col-1"><div class="box" style="background:#df5a00"></div></div>
             <div class="col-9"><label>High Quality Stream Lost</label></div>
-          </div>
-          <hr>
-    
-          <div class="row mt-2">
+         </div>
+         <hr>
+         <div class="row mt-2">
             <i>Move slider to see high quality water loss from current condition
             due to % core forest reduction in the watershed</i>
-          </div>
-            <div class="row mt-2" id="slider">
-              <input autocomplete="off" id="chgSlide" type="range" min="0" max="20" value="0" step="1" /><br>
-              <span id="reduction">0% Core Forest Reduction</span></br>
-            </div>
-            <div class="row mt-4">
-              <div id="loss">0 Kilometers Lost Statewide</div>
-            </div>
-      </div><!-- End of console div -->
+         </div>
+         <div class="row mt-2" id="slider">
+             <input autocomplete="off" id="chgSlide" type="range" min="0" max="20" value="0" step="1" /><br>
+             <span id="reduction">0% Core Forest Reduction</span></br>
+         </div>
+         <div class="row mt-4">
+             <div id="loss">0 Kilometers Lost Statewide</div>
+         </div>
+     </div><!-- End of console div -->
      </div>
         
             
