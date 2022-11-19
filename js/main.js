@@ -135,12 +135,16 @@ document
     .querySelector("#Plot")
     .appendChild(
         Plot.plot({
+            grid: true,
+            width: 300,
+            height: 200,
+            x: { label: "% Reduction Core Forest"},
             marks: [
                 Plot.dot(hqKm, {x: "id", y: "km"}),
                 Plot.line(hqKm, {x: "id", y: "km"})
             ],
             style: {
-                background: "#023059",
+                background: "#333333",
                 fontSize: 500,
                 color: "white",
                 padding: "1px"
