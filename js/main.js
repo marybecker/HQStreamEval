@@ -56,7 +56,7 @@ function addMapLayers(data){
     var pred  = data[1];
     var bound = data[2];
     var lpred = data[3];
-    console.log(lpred);
+    console.log(pred);
     //console.log(lpred['HydroID']['']);
     
     var k = 'HydroID';
@@ -119,6 +119,34 @@ function addMapLayers(data){
 
     addSliderInteraction('catLy', cat)
     addPopup('catLy', 0) //Popup on load before interaction
+
+    var hqKm = [];
+    for (var i=0; i < 21; i ++){
+        if (i == 0){
+            hqKm.push({id:i, km:getStreamLength(cat, 'hqp')})
+        }
+        else {
+            hqKm.push({id:i, km:getStreamLength(cat, 'cfr_' + i.toString())})
+        }
+    }
+    console.log(hqKm);
+
+document
+    .querySelector("#Plot")
+    .appendChild(
+        Plot.plot({
+            marks: [
+                Plot.dot(hqKm, {x: "id", y: "km"}),
+                Plot.line(hqKm, {x: "id", y: "km"})
+            ],
+            style: {
+                background: "#023059",
+                fontSize: 500,
+                color: "white",
+                padding: "1px"
+            }
+        })
+    )
 }
 
 
@@ -211,4 +239,10 @@ function getStreamConditionTxt(data){
     if(data > 0.5 && data < 0.75){return 'high'}
     if(data > 0.75){return 'very high'}
 }
+
+// let hq = d3.select("#chgSlide").node().value;
+// console.log(hq);
+
+
+
 
