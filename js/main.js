@@ -119,38 +119,9 @@ function addMapLayers(data){
 
     addSliderInteraction('catLy', cat)
     addPopup('catLy', 0) //Popup on load before interaction
+    drawPlot(cat, 0)
 
-    var hqKm = [];
-    for (var i=0; i < 21; i ++){
-        if (i == 0){
-            hqKm.push({id:i, km:getStreamLength(cat, 'hqp')})
-        }
-        else {
-            hqKm.push({id:i, km:getStreamLength(cat, 'cfr_' + i.toString())})
-        }
-    }
-    console.log(hqKm);
 
-document
-    .querySelector("#Plot")
-    .appendChild(
-        Plot.plot({
-            grid: true,
-            width: 300,
-            height: 200,
-            x: { label: "% Reduction Core Forest"},
-            marks: [
-                Plot.dot(hqKm, {x: "id", y: "km"}),
-                Plot.line(hqKm, {x: "id", y: "km"})
-            ],
-            style: {
-                background: "#333333",
-                fontSize: 500,
-                color: "white",
-                padding: "1px"
-            }
-        })
-    )
 }
 
 
@@ -158,7 +129,8 @@ document
 function addSliderInteraction(layer, data){
     document.getElementById('slider').addEventListener('input', (event) => {
         var reduction = event.target.value;
-        
+        console.log(reduction);
+
         // get the amount of coreforest reduction
         if (reduction == 0) {var r = 'hqp'}
         else {var r = 'cfr_' + reduction}
@@ -181,12 +153,22 @@ function addSliderInteraction(layer, data){
 
 
         // update text in the slider UI
-        document.getElementById('reduction').innerText = reduction + '% Core Forest Reduction in Drainage Basin';
+        document.getElementById('reduction').innerText = reduction + '% Core Forest Reduction';
         
         s = getStreamLength(data, 'hqp') - getStreamLength(data, r)
-        document.getElementById('loss').innerText = Math.round(s) + ' Kilometers Lost ';
-        
+        spct = Math.round (100 - (getStreamLength(data, r) / getStreamLength(data, 'hqp') * 100))
+        document.getElementById('loss').innerText = `${Math.round(s)} Kilometers Lost Statewide (${spct}%)`;
+
+
         addPopup(layer, reduction)
+        //d3.select('#Plot').html('') //delete everything in div=id Plot
+        //d3.select().text('')
+        //d3.select().style()
+        //d3.select().attr({'class':'new'}) //set the class
+        //d3.select().attr({'id':'div1'})
+        document.getElementById('Plot').innerHTML = ''
+        drawPlot(data, reduction)
+
     });
 }
 
@@ -197,13 +179,14 @@ function addPopup(layer, reduction){
     
 
     map.on('mouseover', layer, function(e) {
-        var p = JSON.parse(e.features[0].properties.pred)
-        var s = getStreamConditionTxt(p[r])
-        var l = JSON.parse(e.features[0].properties.lpred)
+        var p = JSON.parse(e.features[0].properties.pred);
+        var s = getStreamConditionTxt(p[r]);
+        var l = JSON.parse(e.features[0].properties.lpred);
         var lr = 'l_cfr_' + reduction;
         var ll = Math.round(l['l_cfr_0'] - l[lr]);
+        var llpct = Math.round(100 - ((l[lr] / l['l_cfr_0']) * 100));
         console.log(l['l_cfr_0'] - l[lr]);
-        var popupInfo =   `There is a ${s} probability that this stream segment is hiqh quality and ${ll} km lost in the upstream drainage basin with ${reduction}% reduction`;
+        var popupInfo = `<b>Core Forest Reduction:</b> ${reduction}%<br> <b>Probability HQ:</b> ${s} (${p[r]})<hr><b>HQ Lost in Upstream Drainage Basin:</b> ${ll} Kilometers (${llpct}%)`;
         console.log(popupInfo);//duplicating info for each event.  Need to figure out how to remove
         
         // When a hover event occurs on a feature,
@@ -238,14 +221,49 @@ function getStreamLength(data, p){
 }
 
 function getStreamConditionTxt(data){
-    if(data < 0.25){return 'very low'}
-    if(data > 0.25 && data < 0.5){return 'low'}
-    if(data > 0.5 && data < 0.75){return 'high'}
-    if(data > 0.75){return 'very high'}
+    if(data < 0.25){return 'Very Low'}
+    if(data > 0.25 && data < 0.5){return 'Low'}
+    if(data > 0.5 && data < 0.75){return 'High'}
+    if(data > 0.75){return 'Very High'}
 }
 
-// let hq = d3.select("#chgSlide").node().value;
-// console.log(hq);
+function drawPlot(cat, reduction){
+    var hqKm = [];
+    for (var i=0; i < 21; i ++){
+        if (i == 0){
+            hqKm.push({id:i, km:getStreamLength(cat, 'hqp')})
+        }
+        else {
+            hqKm.push({id:i, km:getStreamLength(cat, 'cfr_' + i.toString())})
+        }
+    }
+
+    var n = Number(reduction);
+
+    var hqPlot = Plot.plot({
+        grid: true,
+        width: 275,
+        height: 200,
+        x: {label: `← Kilometers of High Quality Stream`, reverse: true, labelAnchor: 'right'},
+        y: {label: `↑ % Core Forest Reduction`},
+        marks: [
+            Plot.areaY(hqKm, {y: "id", x: "km", fill: "#df5a00", filter: (d) => d.id <= n}),
+            Plot.line(hqKm, {y: "id", x: "km"}),
+            Plot.dot(hqKm, {y: "id", x: "km"}),
+            Plot.dot(hqKm, {y: "id", x: "km", r: 8, fill: "#023059", filter: (d) => d.id === n})
+        ],
+        style: {
+            background: "#333333",
+            fontSize: 500,
+            color: "white",
+            padding: "1px"
+        }
+    })
+
+    document
+        .querySelector("#Plot")
+        .appendChild(hqPlot)
+}
 
 
 

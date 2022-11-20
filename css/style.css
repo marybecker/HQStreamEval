@@ -87,15 +87,16 @@ body {
 }
 
 .mapboxgl-popup-content {
-    width: 5 em;
+    width: 18em;
     height: max-content;
     border: 2px solid #ca562c;
     background-color: #333333;
     color: #f7f7f7;
-    opacity: 80%;
+    opacity: 90%;
     border-radius: 18px;
     margin-bottom: 3px;
     font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.25em;
   }
 
 @media all and (min-width: 1024px) and (max-width: 1400px) {
