@@ -254,7 +254,6 @@ function drawPlot(cat, reduction){
         ],
         style: {
             background: "#333333",
-            fontSize: 500,
             color: "white",
             padding: "1px"
         }
