@@ -58,6 +58,7 @@ The final data set used for modeling included 5169 samples collected within 1769
 | Stratified Drift | Riparian |30 | UCONN CLEAR |
 | Road Density | Drainage Basin |30 | UCONN CLEAR |
 | Slope | Riparian |30 | UCONN CLEAR |
+
 *Table 1. Landscape data used to predict high quality conditions in stream segments across Connecticut*
 
 I derived 9 predictors (Table 1) previously identified to effect sensitive biological populations in Connecticut (Bellucci et al. 2013,  Kanno et al. 2015).  These predictors focused on characterizing the spatial variation in naturally occurring and human disturbance regimes across Connecticut streams. [Landcover datasets](https://clear.uconn.edu/projects/landscape/index.htm) developed by the University of Connecticut Center for Land Use and Education and Research (UCONN CLEAR) for 7 different time periods (1985, 1990, 1995, 2002, 2006, 2010 and 2015).  They were used to derived percentages of land cover classes and forest fragmentation.  I first [developed a script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R) to reclassify each land cover category needed for the model and then extracted land cover classes for each NHD stream catchment. I then extracted the temporally and spatially specific observations for each land cover class that matched the closest time and location (NHD Stream Segment) of each biological observation.  In addition, I characterized geological and hydrological conditions, such as stratified drift, stream density, and upstream drainage basin area.
