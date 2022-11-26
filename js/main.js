@@ -44,9 +44,9 @@ var popup = new mapboxgl.Popup({
 map.on('load', () => {
     // async load the JSON data
     var catchmentData = d3.json('./data/catchments_hq.geojson');
-    var predictionData = d3.json('./data/pred_hq.json');
+    var predictionData = d3.json('./data/pred_hq_alt.json');
     var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
-    var predictionLengthData = d3.json('./data/length_hq.json')
+    var predictionLengthData = d3.json('./data/length_hq_alt.json')
     Promise.all([catchmentData, predictionData, stateBoundaryData, predictionLengthData]).then(addMapLayers);
 });
 
@@ -108,14 +108,34 @@ function addMapLayers(data){
                 ['number', ['get','hqp', ['get','pred']]],
                 0,
                 '#df5a00',
-                0.5,
+                0.25,
+                '#ff9528',
+                0.6,
                 '#3f7ea6',
-                1,
+                0.75,
                 '#023059',
             ],
             'fill-opacity': 0.7
           }
     });
+
+    // map.addLayer({
+    //     'id': 'catLy',
+    //     'type': 'fill',
+    //     'source': 'cat',
+    //     paint: {
+    //         'fill-color': [
+    //             'step',
+    //             ['number', ['get','hqp', ['get','pred']]],
+    //             '#df5a00',
+    //             0.5,
+    //             '#3f7ea6',
+    //             1,
+    //             '#023059',
+    //         ],
+    //         'fill-opacity': 0.7
+    //     }
+    // });
 
     addSliderInteraction('catLy', cat)
     addPopup('catLy', 0) //Popup on load before interaction
@@ -136,7 +156,7 @@ function addSliderInteraction(layer, data){
         else {var r = 'cfr_' + reduction}
 
         // update the map
-        map.setPaintProperty(layer, 'fill-color', 
+        map.setPaintProperty(layer, 'fill-color',
         [
             'interpolate',
             ['linear'],
@@ -150,6 +170,19 @@ function addSliderInteraction(layer, data){
             0.75,
             '#023059',
         ]);
+
+        // map.setPaintProperty(layer, 'fill-color',
+        //     [
+        //         'step',
+        //         ['number', ['get',r, ['get','pred']]],
+        //         '#df5a00',
+        //         0.25,
+        //         '#3E3B41',
+        //         0.5,
+        //         '#3f7ea6',
+        //         0.75,
+        //         '#023059',
+        //     ]);
 
 
         // update text in the slider UI
@@ -263,6 +296,7 @@ function drawPlot(cat, reduction){
         .querySelector("#Plot")
         .appendChild(hqPlot)
 }
+
 
 
 
