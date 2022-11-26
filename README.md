@@ -69,7 +69,7 @@ I developed a random forest model to predict the occurrence of high quality cond
 
 ![Figure 2. RF Variable Importance Plot](analysis/images/RFVarImp.png)
 
-*Figure 2. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is show as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
+*Figure 2. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is measured as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
 
 
 The final model included percent core forest in the drainage basin, percent open water in the drainage basin, percent wetland in the drainage basin, percent agriculture in the drainage basin and percent stratified drift in the stream catchment.  The final model had an overall accuracy of 70%, predicting high quality conditions correctly 67% of the time.
