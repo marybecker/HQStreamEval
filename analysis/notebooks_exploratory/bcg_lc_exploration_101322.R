@@ -18,11 +18,11 @@ cor(bcg_lc[complete.cases(bcg_lc),13:24],
 ggplot(bcg_lc, aes(as.factor(lcYr),levPropNum)) +
   geom_boxplot()
 
-ggplot(bcg_lc, aes(as.factor(lev1Name), area_sqkm)) +
+ggplot(bcg_lc, aes(as.factor(lev1Name), coreforest)) +
   geom_boxplot()+
-  scale_y_log10()+
+  # scale_y_log10()+
   xlab('BCG') +
-  ylab('Drainage Basin (sqkm)') +
+  ylab('Percent Core Forest') +
   theme(panel.background = element_rect(fill = '#252525', colour = '#969696'),
         plot.background = element_rect(fill = '#252525'),
         panel.grid = element_blank(),

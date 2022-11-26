@@ -1,69 +1,52 @@
+## Load packages
 library(randomForest)
 library(e1071)
 library(sf)
 library(rmapshaper)
 library(jsonlite)
 
-
+## Read in Data and Select Parameters 
 bcg_lc <- read.csv("analysis/data/raw/bcg_lc_042922.csv", header = TRUE)
 bcg_lc <- bcg_lc[,c(1:4,9:24)]
 bcg_lc <- bcg_lc[complete.cases(bcg_lc),]
 
+## RF Modeling ###############################################################
+
+## Balance classes for modeling
 bcg_lc_1 <- bcg_lc[bcg_lc$hq==1, ]
 bcg_lc_0 <- bcg_lc[bcg_lc$hq==0, ]
 i <- sample(nrow(bcg_lc_0),704)
 bcg_lc_0 <- bcg_lc_0[i, ]
-
 bcg_lc <- rbind(bcg_lc_1, bcg_lc_0)
 i <- sample(nrow(bcg_lc), nrow(bcg_lc))
 bcg_lc <- bcg_lc[i, ]
 
-
-
+## Randomly select 20% of dataset for testing
 i <- sample(nrow(bcg_lc),0.2 * nrow(bcg_lc))
 test <- bcg_lc[i,]
 train <- bcg_lc[-i,]
-
 hqpa <- as.factor(train[, 'hq'])
-trf <- tuneRF(train[,train_cols], train[, "levPropNum"])
-mt <-  trf[which.min(trf[,2]), 1]
-hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt,
-                     ntree=250)
 
-train_cols = c("catch_strdrf_pct","rc_sqkm","ag","coreforest")
-#(1) fit/train the RF model---------------------------------
-# hqrf <- randomForest(train[,train_cols],hqpa, type="prob")
-# hqrf
-# varImpPlot(hqrf)
-# partialPlot(hqrf, train, coreforest)
-hqrf <- randomForest(train[,c(12,15:17,19:20)],hqpa)
+# trf <- tuneRF(train[,train_cols], train[, "levPropNum"])
+# mt <-  trf[which.min(trf[,2]), 1]
+# hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt,
+#                      ntree=250)
+
+## Select variable to test in the model
+train_cols = c(12,15:16,19:20)
+
+## (1) Train the model------------------------------------
+hqrf <- randomForest(train[,train_cols],hqpa)
 hqrf
-varImpPlot(hqrf)
-
+varImpPlot(hqrf, main = "RF Model - Variable Importance")
 partialPlot(hqrf, train, coreforest)
 
-
-#(1) fit/train the RF model---------------------------------
-hqsvm <- svm(train[,train_cols],hqpa,kernel='radial',gamma = 0.25, cost = 0.5, probability = TRUE)
-hqsvm
-
-#(2) predict/apply the model----------------------------
-# hqpd <- as.data.frame(predict(hqrf, test,type="prob"))
+## (2) Predict/apply the model----------------------------
 hqrfpd <- as.data.frame(predict(hqrf, test[,train_cols]))
 hq_test_rf_pd <- cbind(test,hqrfpd)
 colnames(hq_test_rf_pd)[21] <- "rfpdhq"
 hq_test_rf_pd$correct <- hq_test_rf_pd$hq == hq_test_rf_pd$rfpdhq
 dim(hq_test_rf_pd[hq_test_rf_pd$correct == TRUE & hq_test_rf_pd$hq ==1,])[1]/ dim(hq_test_rf_pd[which(hq_test_rf_pd$hq ==1), ])[1]
-
-#(2) predict/apply the model----------------------------
-hqsvmpd <- as.data.frame(predict(hqsvm, test[,train_cols]), probability = TRUE)
-hq_test_svm_pd <- cbind(test,hqsvmpd)
-colnames(hq_test_svm_pd)[21] <- "svmpdhq"
-hq_test_svm_pd$correct <- hq_test_svm_pd$hq == hq_test_svm_pd$svmpdhq
-dim(hq_test_svm_pd[hq_test_svm_pd$correct == TRUE & hq_test_svm_pd$hq ==1,])[1]/ dim(hq_test_svm_pd[which(hq_test_svm_pd$hq ==1), ])[1]
-
-
-
 
 ## Predict for all catchments using most recent landcover data set (2015)
 catch <- st_read(dsn = "data/catchments.geojson",
@@ -118,29 +101,38 @@ for(i in 1:length(r)){
 }
 
 c <- seq(2, 42, by = 2)
-
 lcdp <- cbind(lcd, lcdp[ ,c(c)])
 lcdp_hq <- lcdp[lcdp$hqp >= 0.5, ]
 row.names(lcdp_hq) <- lcdp_hq$HydroID
-catch <- catch[catch$HydroID %in% lcdp_hq$HydroID, ]
-# catch <- merge(catch, lcdp, by = "HydroID")
-catch <- ms_simplify(catch, keep = 0.1, keep_shapes = TRUE)
 
+
+## Identify the high quality catchment, simplify and export as geojson
+catch <- catch[catch$HydroID %in% lcdp_hq$HydroID, ]
+catch <- ms_simplify(catch, keep = 0.1, keep_shapes = TRUE)
 sf::st_write(catch,
              dsn = "data/catchments_hq.geojson",
              layer = "catchments_hq.geojson",
              append = FALSE)
 
+## Export JSON of predictions with core forest reduction
 lcdp_hq_to_json <- data.frame(HydroID = lcdp_hq$HydroID, 
                               lcd = lcdp_hq$cfr_1)
 lcdp_hq_json <- jsonlite::toJSON(lcdp_hq, dataframe = "rows", pretty = TRUE)
 write(lcdp_hq_json, "data/pred_hq.json")
 
 
+## SVM Modeling ###############################################################
+
+#(1) fit/train the svm model---------------------------------
+hqsvm <- svm(train[,train_cols],hqpa,kernel='radial',gamma = 0.25, cost = 0.5, 
+             probability = TRUE)
+hqsvm
 
 
-sum(lcdp[lcdp$hqp >= 0.5, c("cat_length_km")])
-sum(lcdp[lcdp$cfr_2 >= 0.5, c("cat_length_km")])
-sum(lcdp[lcdp$cfr_10 >= 0.5, c("cat_length_km")])
-
+#(2) predict/apply the model----------------------------
+hqsvmpd <- as.data.frame(predict(hqsvm, test[,train_cols]), probability = TRUE)
+hq_test_svm_pd <- cbind(test,hqsvmpd)
+colnames(hq_test_svm_pd)[21] <- "svmpdhq"
+hq_test_svm_pd$correct <- hq_test_svm_pd$hq == hq_test_svm_pd$svmpdhq
+dim(hq_test_svm_pd[hq_test_svm_pd$correct == TRUE & hq_test_svm_pd$hq ==1,])[1]/ dim(hq_test_svm_pd[which(hq_test_svm_pd$hq ==1), ])[1]
 
