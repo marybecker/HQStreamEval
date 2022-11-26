@@ -34,9 +34,6 @@ body {
     max-height: calc(100vh - 0px - 140px);
     overflow-y: auto;
 }
-/*#Plot svg {*/
-/*    font-size: 0.6em !important;*/
-/*}*/
 
 /* Modify the navbar */
 .navbar-custom {
@@ -47,7 +44,6 @@ body {
     z-index:1;
 }
 /* Modify brand and text color */
-
 .navbar-title {
     color: #ffffff;
     font-family: 'Montserrat', sans-serif;
@@ -57,7 +53,6 @@ body {
     padding-top:0px;
     padding-bottom:0px;
     padding-left: 20px;
-
 }
 
 .navbar-subtitle {
@@ -97,7 +92,7 @@ body {
     margin-bottom: 3px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.25em;
-  }
+}
 
 @media all and (min-width: 1024px) and (max-width: 1400px) {
     .navbar-title{

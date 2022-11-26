@@ -44,20 +44,18 @@ var popup = new mapboxgl.Popup({
 map.on('load', () => {
     // async load the JSON data
     var catchmentData = d3.json('./data/catchments_hq.geojson');
-    var predictionData = d3.json('./data/pred_hq_alt.json');
+    var predictionData = d3.json('./data/pred_hq.json');
     var stateBoundaryData = d3.json('./data/ctStateBoundary.geojson');
-    var predictionLengthData = d3.json('./data/length_hq_alt.json')
+    var predictionLengthData = d3.json('./data/length_hq.json')
     Promise.all([catchmentData, predictionData, stateBoundaryData, predictionLengthData]).then(addMapLayers);
 });
 
 function addMapLayers(data){
-    //data = [catchmentData, predictionData, stateBoundaryData]; from line 47
+    //data = [catchmentData, predictionData, stateBoundaryData, predictionLengthData]; from line 50
     var cat   = data[0];
     var pred  = data[1];
     var bound = data[2];
     var lpred = data[3];
-    console.log(pred);
-    //console.log(lpred['HydroID']['']);
     
     var k = 'HydroID';
     var cat_idx = {};
@@ -74,7 +72,7 @@ function addMapLayers(data){
         var k_b = lpred[j][k];                                          //get the hydro_id key for B[j]
         cat['features'][cat_idx[k_b]]['properties']['lpred'] = lpred[j]; //insert B[j] into A[i] #check this for string?
     }
-    console.log(cat);
+    /*console.log(cat);*/
     map.addSource('cat', {
         type: 'geojson',
         data: cat
@@ -119,29 +117,9 @@ function addMapLayers(data){
           }
     });
 
-    // map.addLayer({
-    //     'id': 'catLy',
-    //     'type': 'fill',
-    //     'source': 'cat',
-    //     paint: {
-    //         'fill-color': [
-    //             'step',
-    //             ['number', ['get','hqp', ['get','pred']]],
-    //             '#df5a00',
-    //             0.5,
-    //             '#3f7ea6',
-    //             1,
-    //             '#023059',
-    //         ],
-    //         'fill-opacity': 0.7
-    //     }
-    // });
-
     addSliderInteraction('catLy', cat)
     addPopup('catLy', 0) //Popup on load before interaction
     drawPlot(cat, 0)
-
-
 }
 
 
@@ -149,7 +127,7 @@ function addMapLayers(data){
 function addSliderInteraction(layer, data){
     document.getElementById('slider').addEventListener('input', (event) => {
         var reduction = event.target.value;
-        console.log(reduction);
+        /*console.log(reduction);*/
 
         // get the amount of coreforest reduction
         if (reduction == 0) {var r = 'hqp'}
@@ -171,20 +149,6 @@ function addSliderInteraction(layer, data){
             '#023059',
         ]);
 
-        // map.setPaintProperty(layer, 'fill-color',
-        //     [
-        //         'step',
-        //         ['number', ['get',r, ['get','pred']]],
-        //         '#df5a00',
-        //         0.25,
-        //         '#3E3B41',
-        //         0.5,
-        //         '#3f7ea6',
-        //         0.75,
-        //         '#023059',
-        //     ]);
-
-
         // update text in the slider UI
         document.getElementById('reduction').innerText = reduction + '% Core Forest Reduction';
         
@@ -194,11 +158,6 @@ function addSliderInteraction(layer, data){
 
 
         addPopup(layer, reduction)
-        //d3.select('#Plot').html('') //delete everything in div=id Plot
-        //d3.select().text('')
-        //d3.select().style()
-        //d3.select().attr({'class':'new'}) //set the class
-        //d3.select().attr({'id':'div1'})
         document.getElementById('Plot').innerHTML = ''
         drawPlot(data, reduction)
 
@@ -218,9 +177,9 @@ function addPopup(layer, reduction){
         var lr = 'l_cfr_' + reduction;
         var ll = Math.round(l['l_cfr_0'] - l[lr]);
         var llpct = Math.round(100 - ((l[lr] / l['l_cfr_0']) * 100));
-        console.log(l['l_cfr_0'] - l[lr]);
+        /*console.log(l['l_cfr_0'] - l[lr]);*/
         var popupInfo = `<b>Core Forest Reduction:</b> ${reduction}%<br> <b>Probability HQ:</b> ${s} (${p[r]})<hr><b>HQ Lost in Upstream Drainage Basin:</b> ${ll} Kilometers (${llpct}%)`;
-        console.log(popupInfo);//duplicating info for each event.  Need to figure out how to remove
+        /*console.log(popupInfo);*/
         
         // When a hover event occurs on a feature,
         // open a popup at the location of the hover, with description
@@ -229,10 +188,9 @@ function addPopup(layer, reduction){
     });
 
     // Change the cursor to a pointer when the mouse is over.
-    // map.on('mousemove', layer, () => {
-    //     map.getCanvas().style.cursor = 'pointer';
-    // });
-
+    map.on('mousemove', layer, () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
     // Change the cursor back to a pointer when it leaves the point.
     map.on('mouseleave', layer, () => {
         map.getCanvas().style.cursor = '';
@@ -248,7 +206,6 @@ function getStreamLength(data, p){
         
         if(j > 0.5 && sum_length == 0){sum_length = l}
         else if(j > 0.5){sum_length = sum_length + l}
-        
     }
     return sum_length;
 }

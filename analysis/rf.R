@@ -32,10 +32,10 @@ hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt,
 
 train_cols = c("catch_strdrf_pct","rc_sqkm","ag","coreforest")
 #(1) fit/train the RF model---------------------------------
-hqrf <- randomForest(train[,train_cols],hqpa, type="prob")
-hqrf
-varImpPlot(hqrf)
-partialPlot(hqrf, train, coreforest)
+# hqrf <- randomForest(train[,train_cols],hqpa, type="prob")
+# hqrf
+# varImpPlot(hqrf)
+# partialPlot(hqrf, train, coreforest)
 hqrf <- randomForest(train[,c(12,15:17,19:20)],hqpa)
 hqrf
 varImpPlot(hqrf)
