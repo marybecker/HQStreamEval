@@ -12,17 +12,67 @@ body {
     width: 100%;
 }
 
+#consoleCollaspe {
+    position: absolute;
+    top: 10em;
+    margin: 10px;
+    padding: 10px 20px;
+}
+
 #console {
     position: absolute;
     width: 20em;
     left: 1em;
-    top: 3em;
+    top: 10em;
     margin: 10px;
     padding: 10px 20px;
+    font-family: 'Source Sans Pro', sans-serif;
     border: 2px solid #023059;
-    background-color: #a9a9a9;
+    background-color: #333333;
     color: #ffffff;
     opacity: 90%;
+    max-height: calc(100vh - 0px - 140px);
+    overflow-y: auto;
+}
+/*#Plot svg {*/
+/*    font-size: 0.6em !important;*/
+/*}*/
+
+/* Modify the navbar */
+.navbar-custom {
+    background-color: #333333;
+    opacity: 90%;
+    padding-top:0px;
+    padding-bottom:0px;
+    z-index:1;
+}
+/* Modify brand and text color */
+
+.navbar-title {
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+    font-size: 225%;
+    padding-top:0px;
+    padding-bottom:0px;
+    padding-left: 20px;
+
+}
+
+.navbar-subtitle {
+    color: #ffffff;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight:390;
+    letter-spacing: 3px;
+    font-size: 125%;
+    padding-right: 20px;
+    padding-left: 20px;
+    display: inline-block;
+}
+
+.modal {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .box {
@@ -37,12 +87,75 @@ body {
 }
 
 .mapboxgl-popup-content {
-    width: 5 em;
+    width: 18em;
     height: max-content;
     border: 2px solid #ca562c;
     background-color: #333333;
     color: #f7f7f7;
-    opacity: 80%;
+    opacity: 90%;
     border-radius: 18px;
     margin-bottom: 3px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.25em;
   }
+
+@media all and (min-width: 1024px) and (max-width: 1400px) {
+    .navbar-title{
+        font-size:200%;
+    }
+    .navbar-subtitle{
+        font-size: 80%;
+    }
+    #console{
+        width: 20em;
+    }
+
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .navbar-title{
+        font-size:80%;
+    }
+    .logo{
+        display:none;
+    }
+    .navbar-subtitle{
+        font-size: 80%;
+    }
+    #Plot{
+        display:none
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 768px) {
+    .navbar-title{
+        font-size:80%;
+    }
+
+    .logo{
+        display:none;
+    }
+    .navbar-subtitle{
+        font-size: 80%;
+    }
+    #Plot{
+        display:none
+    }
+}
+
+@media all and (max-width: 480px) {
+    .navbar-title{
+        font-size:70%;
+    }
+    .logo{
+        display:none;
+    }
+    .navbar-subtitle{
+        font-size: 70%;
+    }
+    #Plot{
+        display:none
+    }
+
+}
+

@@ -1,4 +1,5 @@
 library(randomForest)
+library(e1071)
 library(sf)
 library(rmapshaper)
 library(jsonlite)
@@ -24,29 +25,47 @@ test <- bcg_lc[i,]
 train <- bcg_lc[-i,]
 
 hqpa <- as.factor(train[, 'hq'])
-# trf <- tuneRF(train[,8:ncol(train)], train[, "levPropNum"])
-# mt <-  trf[which.min(trf[,2]), 1]
-# hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt, 
-#                      ntree=250)
+trf <- tuneRF(train[,train_cols], train[, "levPropNum"])
+mt <-  trf[which.min(trf[,2]), 1]
+hqrf <- randomForest(train[,8:ncol(train)], train[, "levPropNum"], mtry=mt,
+                     ntree=250)
 
+train_cols = c("catch_strdrf_pct","rc_sqkm","ag","coreforest")
+#(1) fit/train the RF model---------------------------------
+hqrf <- randomForest(train[,train_cols],hqpa, type="prob")
+hqrf
+varImpPlot(hqrf)
+partialPlot(hqrf, train, coreforest)
 hqrf <- randomForest(train[,c(12,15:17,19:20)],hqpa)
 hqrf
 varImpPlot(hqrf)
 
 partialPlot(hqrf, train, coreforest)
 
+
+#(1) fit/train the RF model---------------------------------
+hqsvm <- svm(train[,train_cols],hqpa,kernel='radial',gamma = 0.25, cost = 0.5, probability = TRUE)
+hqsvm
+
+#(2) predict/apply the model----------------------------
 # hqpd <- as.data.frame(predict(hqrf, test,type="prob"))
-hqpd <- as.data.frame(predict(hqrf, test))
+hqrfpd <- as.data.frame(predict(hqrf, test[,train_cols]))
+hq_test_rf_pd <- cbind(test,hqrfpd)
+colnames(hq_test_rf_pd)[21] <- "rfpdhq"
+hq_test_rf_pd$correct <- hq_test_rf_pd$hq == hq_test_rf_pd$rfpdhq
+dim(hq_test_rf_pd[hq_test_rf_pd$correct == TRUE & hq_test_rf_pd$hq ==1,])[1]/ dim(hq_test_rf_pd[which(hq_test_rf_pd$hq ==1), ])[1]
 
-hq_test_pd <- cbind(test,hqpd)
-colnames(hq_test_pd)[21] <- "pdhq"
+#(2) predict/apply the model----------------------------
+hqsvmpd <- as.data.frame(predict(hqsvm, test[,train_cols]), probability = TRUE)
+hq_test_svm_pd <- cbind(test,hqsvmpd)
+colnames(hq_test_svm_pd)[21] <- "svmpdhq"
+hq_test_svm_pd$correct <- hq_test_svm_pd$hq == hq_test_svm_pd$svmpdhq
+dim(hq_test_svm_pd[hq_test_svm_pd$correct == TRUE & hq_test_svm_pd$hq ==1,])[1]/ dim(hq_test_svm_pd[which(hq_test_svm_pd$hq ==1), ])[1]
 
-hq_test_pd$correct <- hq_test_pd$hq == hq_test_pd$pdhq
 
-dim(hq_test_pd[hq_test_pd$correct == TRUE & hq_test_pd$hq ==1,])[1]/ dim(hq_test_pd[which(hq_test_pd$hq ==1), ])[1]
+
 
 ## Predict for all catchments using most recent landcover data set (2015)
-
 catch <- st_read(dsn = "data/catchments.geojson",
                  layer = "catchments")
 catch_length <- read.csv("analysis/data/drainage_area_length.csv",
@@ -86,14 +105,14 @@ lcd <- lcd[which(is.finite(lcd$sum_strdrf_pct)),]
 
 
 r <- seq(0.01, 0.20, by = 0.01)
-lcdp <- as.data.frame(predict(hqrf, lcd, type="prob"))
+lcdp <- as.data.frame(predict(hqsvm, lcd[,train_cols], probability=TRUE))
 colnames(lcdp)[2] <- "hqp"
 
 for(i in 1:length(r)){
   lcd_alt <- lcd
   lcd_alt$coreforest  <- lcd_alt$coreforest - r[i]
   lcd_alt$dev         <- lcd_alt$dev + r[i]
-  lcdp_alt <- as.data.frame(predict(hqrf, lcd_alt, type="prob"))
+  lcdp_alt <- as.data.frame(predict(hqsvm, lcd_alt[,train_cols], type="prob"))
   colnames(lcdp_alt)[2] <- paste0("cfr_",r[i]*100)
   lcdp <- cbind(lcdp, lcdp_alt)
 }
