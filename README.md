@@ -47,17 +47,17 @@ The final data set used for modeling included 5169 samples collected within 1769
 
 **Characterization of temporally and spatially specific drainage basin conditions for biological samples**
 
-| Variable | Scale |Data resolution (m) | Source|
-| ---------- | -------|----------------------   | -------  |
+| Variable | Scale |Data resolution (m) | Source      |
+| ---------- | -------|----------------------   |-------------|
 | Core Forest 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
 | Fragmented Forest 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
 | Open Water 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
 | Wetland 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
 | Developed 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
 | Agriculture 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Stratified Drift | Riparian |30 | UCONN CLEAR |
-| Road Density | Drainage Basin |30 | UCONN CLEAR |
-| Slope | Riparian |30 | UCONN CLEAR |
+| Stratified Drift | Riparian |30 | CT DEEP     |
+| Road Density | Drainage Basin |30 | CT DEEP     |
+| Slope | Riparian |30 | CT DEEP     |
 
 *Table 1. Landscape data used to predict high quality conditions in stream segments across Connecticut*
 
