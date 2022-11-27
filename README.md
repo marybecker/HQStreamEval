@@ -45,7 +45,7 @@ Biological condition gradient models have been developed for both macro-inverteb
 
 ![Figure 2. HQ Sampling Sites](analysis/images/Screenshot_HQRivers_112622.png)
 
-*[BCG 1 and 2 Biological Sampling Sites 1988 - 2020 Interactive Map](https://marybecker.github.io/HighQualityStreams/)*
+*Figure 2. [BCG 1 and 2 Biological Sampling Sites 1988 - 2020 Interactive Map](https://marybecker.github.io/HighQualityStreams/)*
 
 The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2).
 
@@ -71,9 +71,9 @@ I derived 9 predictors (Table 1) previously identified to effect sensitive biolo
 
 I developed a random forest model to predict the occurrence of high quality conditions in Connecticut streams.  Random Forest (RF) is a regression and classification modeling approach that has been widely used in ecological modeling (Cutler et al. 2007, Valavi et al. 2021).  RF models combine predictions from many trees based on bootstrapped samples of predictor and response data to produce robust models resistant to overfitting.  Model accuracy was assessed by randomly reserving 20 percent of the samples for cross-validation testing.  [Models were built with the “randomForests” package in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/rf.R) (Liaw & Wiener 2002).  Multiple models were developed by adding and removing variables.  The best performing model with the highest and most consistent performing accuracy was chosen to use in the mapping application.  In all models core forest in the upstream drainage basin was the most important in explaining high quality conditions (Figure 2).
 
-![Figure 2. RF Variable Importance Plot](analysis/images/RFVarImp.png)
+![Figure 3. RF Variable Importance Plot](analysis/images/RFVarImp.png)
 
-*Figure 2. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is measured as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
+*Figure 3. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is measured as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
 
 
 The final model included percent core forest in the drainage basin, percent open water in the drainage basin, percent wetland in the drainage basin, percent agriculture in the drainage basin and percent stratified drift in the stream catchment.  The final model had an overall accuracy of 70%, predicting high quality conditions correctly 67% of the time.
@@ -109,7 +109,7 @@ The application layout is a simple straight forward design with a small top titl
 
 ![HQ Vulnerability](presentation/images/hq_water_vulnerability_map_mockup.jpg)
 
-*Figure 3.  Full Scale Wire Frame*
+*Figure 4.  Full Scale Wire Frame*
 
 The mapping application displays the likelihood of stream network drainage catchments supporting high quality conditions and biological integrity.  The catchment data is represented as polygons.  Drainage catchments are areas that drain to a particular stream segment.  Catchments are delineated based on the underlying stream network.  Use of drainage catchments convey the importance of land-water interactions that effect stream conditions.  The likelihood of a drainage catchment supporting high quality conditions is displayed using a color gradient of blue to orange.  The more likely a catchment is predicted to support a high quality condition, the darker the blue color will be displayed.  Catchments with less than a 50% likelihood are displayed as varying shades of orange.
 
