@@ -43,7 +43,7 @@ Benthic macro-invertebrate samples were collected by the CT DEEP Ambient Monitor
 
 Biological condition gradient models have been developed for both macro-invertebrate and fish communities in Connecticut (Gerritsen & Jessup 2007, Stamp & Gerritsen 2013).  The models incorporate multiple attribute decision criteria to assign stream to levels or tiers of the BCG and it can be directly applied to designation of multiple aquatic life uses in Connecticut’s water quality criteria and standards.  The models were run using the [BioMonTools](https://github.com/leppott/BioMonTools) and [BCGcalc](https://github.com/leppott/BCGcalc) packages written for the R statistical programming language (Leppo 2022a, Leppo 2022b).
 
-The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.
+The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2).
 
 **Characterization of temporally and spatially specific drainage basin conditions for biological samples**
 
