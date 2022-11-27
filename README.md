@@ -4,7 +4,7 @@
 
 [**Interactive Map – Ver. 0.8 2022-11-26**](https://marybecker.github.io/HQStreamEval/index.html)
 
-[**Defense Presentation - 2022-03-13**](https://marybecker.github.io/HQStreamEval/presentation/index.html)
+[**Defense Presentation - 2022-11-29**](https://marybecker.github.io/HQStreamEval/presentation/index.html)
 
 ## I. Introduction and Overview
 Significant progress has been made to clean up rivers since the passage of the 1972 U.S. Federal Water Pollution and Control Act amendments, more commonly referred to as the Clean Water Act (CWA), fifty years ago. However, since that time much of the focus has been on restoring waste-receiving streams with overt pollution problems which has left high quality streams vulnerable and open to degradation (EPA 2012a). High quality streams are those waters whose quality exceed that necessary to protect the minimum goals, typically referred to as “fishable / swimmable”, under the CWA.  High quality streams support healthy populations of aquatic life only found under least disturbed conditions with little pollution (Bellucci et al. 2011) along with a wide array of critical ecosystem services that benefit the social and economic well-being of humans (EPA 2012b).   Despite restoration efforts, studies around the U.S. have noted that aquatic ecosystems are continuing to decline and pollutants levels are increasing in pristine streams (EPA 2012a, Hudy et al. 2011, Stoddard et al. 2016).  Preliminary work conducted in Connecticut suggests the possible reduction of species sensitive to pollution in some high-quality streams sampling sites monitored over the past 30 years (Eltz & Beauchene 2020, Becker & Bellucci 2021).

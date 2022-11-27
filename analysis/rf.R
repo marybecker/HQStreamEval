@@ -88,19 +88,20 @@ lcd <- lcd[which(is.finite(lcd$sum_strdrf_pct)),]
 
 
 r <- seq(0.01, 0.20, by = 0.01)
-lcdp <- as.data.frame(predict(hqsvm, lcd[,train_cols], probability=TRUE))
+lcdp <- as.data.frame(predict(hqrf, lcd, type="prob"))
 colnames(lcdp)[2] <- "hqp"
 
 for(i in 1:length(r)){
   lcd_alt <- lcd
   lcd_alt$coreforest  <- lcd_alt$coreforest - r[i]
   lcd_alt$dev         <- lcd_alt$dev + r[i]
-  lcdp_alt <- as.data.frame(predict(hqsvm, lcd_alt[,train_cols], type="prob"))
+  lcdp_alt <- as.data.frame(predict(hqrf, lcd_alt, type="prob"))
   colnames(lcdp_alt)[2] <- paste0("cfr_",r[i]*100)
   lcdp <- cbind(lcdp, lcdp_alt)
 }
 
 c <- seq(2, 42, by = 2)
+
 lcdp <- cbind(lcd, lcdp[ ,c(c)])
 lcdp_hq <- lcdp[lcdp$hqp >= 0.5, ]
 row.names(lcdp_hq) <- lcdp_hq$HydroID
