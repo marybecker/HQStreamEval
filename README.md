@@ -47,7 +47,7 @@ Biological condition gradient models have been developed for both macro-inverteb
 
 *Figure 2. [BCG 1 and 2 Biological Sampling Sites 1988 - 2020 Interactive Map](https://marybecker.github.io/HighQualityStreams/)*
 
-The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2).
+The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2) (Figure 2).
 
 **Characterization of temporally and spatially specific drainage basin conditions for biological samples**
 
