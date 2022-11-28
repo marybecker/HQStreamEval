@@ -119,7 +119,7 @@ The application layout is a simple straight forward design with a small top titl
 
 *Figure 6.  Full Scale Wire Frame*
 
-The mapping application displays the likelihood of stream network drainage catchments supporting high quality conditions and biological integrity.  The catchment data is represented as polygons.  Drainage catchments are areas that drain to a particular stream segment.  Catchments are delineated based on the underlying stream network.  Use of drainage catchments convey the importance of land-water interactions that effect stream conditions.  The likelihood of a drainage catchment supporting high quality conditions is displayed using a color gradient of blue to orange.  The more likely a catchment is predicted to support a high quality condition, the darker the blue color will be displayed.  Catchments with less than a 50% likelihood are displayed as varying shades of orange.
+The mapping application displays the likelihood of stream network drainage catchments supporting high quality conditions and biological integrity.  The catchment data is represented as polygons.  Drainage catchments are areas that drain to a particular stream segment.  Catchments are delineated based on the underlying stream network.  Use of drainage catchments convey the importance of land-water interactions that effect stream conditions.  The likelihood of a drainage catchment supporting high quality conditions is displayed using a color gradient of blue to orange.  The more likely a catchment is predicted to support a high quality condition, the darker the blue color is displayed.  Catchments with less than a 50% likelihood are displayed as varying shades of orange.
 
 ### E. User Interaction
 
