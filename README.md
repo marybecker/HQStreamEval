@@ -29,6 +29,10 @@ This information could be used by aquatic resource managers, decision makers and
 
 To develop models that make stream-specific prediction across Connecticut, I used macro-invertebrate and fish biological data sets collected over the past 30 years by the CT DEEP Monitoring and Assessment Program, as well as, the Inland Fisheries Program.  I also used a high resolution National Hydrography flowline and catchment data set that was developed by the [USGS Conte Lab]( http://conte-ecology.github.io/shedsGisData/) and cleaned for Connecticut. This data set is based on a network of stream segments.  The stream network was used to calculate drainage basin land cover statistics using a [custom script in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R).
 
+![Figure 2. Modeling Overview](presentation/images/model_workflow.png)
+
+*Figure 2. Overview of the approach used to model current high quality conditions acrosss the State of Connecticut*
+
 The model was developed in several steps:
 1.	Identify minimally disturbed streams that support high quality conditions and biological integrity (BCG Tiers 1 or 2) to create training and validation biological data sets
 2.	Characterize temporally and spatially specific drainage basin environments for each biological sample that includes corresponding land cover conditions for the nearest time period of sampling using the [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/) and [CT DEEP](https://ct-deep-gis-open-data-website-ctdeep.hub.arcgis.com/) 30 M resolution land cover data sets that describe natural and human disturbance conditions.
