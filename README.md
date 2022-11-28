@@ -27,60 +27,64 @@ This information could be used by aquatic resource managers, decision makers and
 
 **General Modeling Approach**
 
-To develop models that make stream-specific prediction across Connecticut, I used macro-invertebrate and fish biological data sets collected over the past 30 years by the CT DEEP Monitoring and Assessment Program, as well as, the Inland Fisheries Program.  I also used a high resolution National Hydrography flowline and catchment data set that was developed by the [USGS Conte Lab]( http://conte-ecology.github.io/shedsGisData/) and cleaned for Connecticut. This data set is based on a network of stream segments.  The stream network was used to calculate drainage basin land cover statistics using a [custom script in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R).
+![Figure 2. Flow network](presentation/images/catchment_drainage_basin.png)
 
-![Figure 2. Modeling Overview](presentation/images/model_workflow.png)
+*Figure 2. Example of flow network used for landscape analysis*
 
-*Figure 2. Overview of the approach used to model current high quality conditions acrosss the State of Connecticut*
+To develop models that make stream-specific prediction across Connecticut, I used macro-invertebrate and fish biological data sets collected over the past 30 years by the CT DEEP Monitoring and Assessment Program, as well as, the Inland Fisheries Program.  I also used a high resolution National Hydrography flowline and catchment data set that was developed by the [USGS Conte Lab]( http://conte-ecology.github.io/shedsGisData/) and cleaned for Connecticut. This data set is based on a network of stream segments.  The network consists of catchments representing drainage around individual streams segments that include a flow network that was used to identify total upstream drainages from sample locations (Figure 2).  The stream network was used to calculate drainage basin land cover statistics using a [custom script in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R).
 
-The model was developed in several steps:
+![Figure 3. Modeling Overview](presentation/images/model_workflow_background.png)
+
+*Figure 3. Overview of the approach used to model current high quality conditions acrosss the State of Connecticut*
+
+The model was developed in several steps (Figure 3.):
 1.	Identify minimally disturbed streams that support high quality conditions and biological integrity (BCG Tiers 1 or 2) to create training and validation biological data sets
 2.	Characterize temporally and spatially specific drainage basin environments for each biological sample that includes corresponding land cover conditions for the nearest time period of sampling using the [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/) and [CT DEEP](https://ct-deep-gis-open-data-website-ctdeep.hub.arcgis.com/) 30 M resolution land cover data sets that describe natural and human disturbance conditions.
-3.	Relate observed BCG to environmental predictors using a machine learning technique (e.g. random forests).
-4.	Assess model performance and validate using multiple observations made at randomly chosen stream segments.
+3.	Relate observed BCG to landscape predictors using a machine learning technique (e.g. random forests).
+4.	Assess model performance and validate using randomly choosen sample observations.
 
 **Biological Data Sets and Biological Condition Gradient Metric Calculations**
 
-Fish samples were collected by the CT DEEP Inland Fisheries and Ambient Monitoring and Assessment program using comparable methods during a May - October index period from 1988 – 2020 (Hagstrom et al. 1996, CT DEEP 2013). Crews sampled 10-20 mean stream widths with the average sample width being approximately 118 meters. Reach widths used in this data set ranged from 25 to 500 meters. The type of gear that a crew used depended on the stream width. In small streams, crews typically sample with one backpack shocker. In medium-sized streams, they used 2 backpack shockers or 1 tote barge, and in large streams, crews sampled with multi-tote barges. All captured individuals were measured to the nearest centimeter and are identified to the species level.
+Fish samples were collected by the CT DEEP Inland Fisheries and Ambient Monitoring and Assessment program using comparable methods during a May - October index period from 1988 – 2020 (Hagstrom et al. 1996, CT DEEP 2013). Crews sampled stream reach lengths that were 10-20 times the mean stream width with an average sample length of approximately 118 meters. Stream reach lengths used in this data set ranged from 25 to 500 meters. The type of gear that a crew used depended on the stream width. In small streams, crews typically sample with one backpack shocker. In medium-sized streams, they used 2 backpack shockers or 1 tote barge, and in large streams, crews sampled with multi-tote barges. All captured individuals were measured to the nearest centimeter and are identified to the species level.
 
-Benthic macro-invertebrate samples were collected by the CT DEEP Ambient Monitoring and Assessment program from September through November using an 800-u m-mesh kick net from 1989 - 2020. A total of 2 meters squared of riffle habitat (12 kicks composited from multiple riffles of a stream reach) were sampled at each location. Samples were preserved in 70% ethyl alcohol and brought back to the laboratory for subsampling. A 200-organism subsample was taken using a random grid design (Plafkin et al. 1989) from each sampling location. Organisms were identified to the lowest practical taxon, generally species.
+Benthic macro-invertebrate samples were collected by the CT DEEP Ambient Monitoring and Assessment program from September through November using an 800-um mesh kick net from 1989 - 2020. A total of 2 meters squared of riffle habitat (12 kicks composited from multiple riffles of a stream reach) were sampled at each location. Samples were preserved in 70% ethyl alcohol and brought back to the laboratory for subsampling. A 200-organism subsample was taken using a random grid design (Plafkin et al. 1989) from each sampling location. Organisms were identified to the lowest practical taxon, generally species.
 
 Biological condition gradient models have been developed for both macro-invertebrate and fish communities in Connecticut (Gerritsen & Jessup 2007, Stamp & Gerritsen 2013).  The models incorporate multiple attribute decision criteria to assign stream to levels or tiers of the BCG and it can be directly applied to designation of multiple aquatic life uses in Connecticut’s water quality criteria and standards.  The models were run using the [BioMonTools](https://github.com/leppott/BioMonTools) and [BCGcalc](https://github.com/leppott/BCGcalc) packages written for the R statistical programming language (Leppo 2022a, Leppo 2022b).
 
-![Figure 2. HQ Sampling Sites](analysis/images/Screenshot_HQRivers_112622.png)
+![Figure 4. HQ Sampling Sites](analysis/images/Screenshot_HQRivers_112622.png)
 
-*Figure 2. [BCG 1 and 2 Biological Sampling Sites 1988 - 2020 Interactive Map](https://marybecker.github.io/HighQualityStreams/)*
+*Figure 4. [BCG 1 and 2 Biological Sampling Sites 1988 - 2020 Interactive Map](https://marybecker.github.io/HighQualityStreams/)*
 
-The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2) (Figure 2).
+The final data set used for modeling included 5169 samples collected within 1769 individual stream segments.  This included 3244 fish samples and 1925 macro-invertebrate samples.  425 stream segments (~24%) contained a high quality sample (BCG 1 or 2) (Figure 4).
 
 **Characterization of temporally and spatially specific drainage basin conditions for biological samples**
 
-| Variable | Scale |Data resolution (m) | Source      |
+| Variable | Analysis Scale |Data resolution (m) | Source      |
 | ---------- | -------|----------------------   |-------------|
-| Core Forest 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Fragmented Forest 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Open Water 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Wetland 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Developed 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Agriculture 1985 - 2015| Drainage Basin |30 | UCONN CLEAR |
-| Stratified Drift | Riparian |30 | CT DEEP     |
-| Road Density | Drainage Basin |30 | CT DEEP     |
-| Slope | Riparian |30 | CT DEEP     |
+| Core Forest 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Fragmented Forest 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Open Water 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Wetland 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Developed 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Agriculture 1985 - 2015| Catchment / Drainage Basin |30 | [UCONN CLEAR](https://clear.uconn.edu/projects/landscape/download/) |
+| Stratified Drift | Catchment / Drainage Basin |30 | [CT DEEP](https://ct-deep-gis-open-data-website-ctdeep.hub.arcgis.com/datasets/CTDEEP::connecticut-surficial-stratified-drift/about)     |
+| Road Density (Derived from Roads layer in R) | Drainage Basin |30 | [CT DEEP](https://deepmaps.ct.gov/datasets/CTDEEP::connecticut-road/about)     |
+| Slope (Derived from Elevation in QGIS) | Catchment |2 | [UCONN CLEAR](https://cteco.uconn.edu/data/lidar/index.htm)     |
 
 *Table 1. Landscape data used to predict high quality conditions in stream segments across Connecticut*
 
-I derived 9 predictors (Table 1) previously identified to effect sensitive biological populations in Connecticut (Bellucci et al. 2013,  Kanno et al. 2015).  These predictors focused on characterizing the spatial variation in naturally occurring and human disturbance regimes across Connecticut streams. [Landcover datasets](https://clear.uconn.edu/projects/landscape/index.htm) developed by the University of Connecticut Center for Land Use and Education and Research (UCONN CLEAR) for 7 different time periods (1985, 1990, 1995, 2002, 2006, 2010 and 2015).  They were used to derived percentages of land cover classes and forest fragmentation.  I first [developed a script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R) to reclassify each land cover category needed for the model and then extracted land cover classes for each NHD stream catchment.  Once the land cover data set was reclassified I calculated zonal statistics for each catchment polygon using the [terra package in R](https://cran.rstudio.com/web/packages/terra/terra.pdf) (Hijams 2021).  Next I calculated the cumulative upstream drainage basin land cover percentages using a [custom developed R script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R). I then developed a R script to extract the temporally and spatially specific observations for each land cover class that matched the [closest time and location (stream segment) of each biological observation](https://github.com/marybecker/HQStreamEval/blob/main/analysis/bio_closest_lc_yr.R).  In addition, I characterized geological and hydrological conditions, such as stratified drift, stream density, and upstream drainage basin area.
+I identified 9 predictors previously identified to effect sensitive biological populations in Connecticut (Bellucci et al. 2013,  Kanno et al. 2015) for multiple scales and time periods (Table 1).  These predictors focused on characterizing the spatial variation in naturally occurring and human disturbance regimes across Connecticut streams. [Landcover datasets](https://clear.uconn.edu/projects/landscape/index.htm) developed by the University of Connecticut Center for Land Use and Education and Research (UCONN CLEAR) for 7 different time periods (1985, 1990, 1995, 2002, 2006, 2010 and 2015) were used to derive percentages of land cover classes and forest fragmentation.  I first [developed a script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/lc_catchment_stats.R) to reclassify each land cover category into a separate raster file.  Once the land cover data set was reclassified I used the zonal statistics tool in the [terra package in R](https://cran.rstudio.com/web/packages/terra/terra.pdf) (Hijams 2021) to calculate the percent land cover in each stream catchment.  Next I calculated the cumulative upstream drainage basin land cover percentages (sum of the catchment calculations) using a [custom developed R script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R). I then [developed a R script](https://github.com/marybecker/HQStreamEval/blob/main/analysis/bio_closest_lc_yr.R) to extract the temporally and spatially specific observations for each land cover class that matched the closest time and location (stream segment) of each biological observation.  In addition, I characterized geological and hydrological conditions, such as stratified drift, slope, stream density, and upstream drainage basin area.
 
 **Random Forest Model Development to Relate Observed High Quality Conditions to Predictors**
 
-I developed a random forest model to predict the occurrence of high quality conditions in Connecticut streams.  Random Forest (RF) is a regression and classification modeling approach that has been widely used in ecological modeling (Cutler et al. 2007, Valavi et al. 2021).  RF models combine predictions from many trees based on bootstrapped samples of predictor and response data to produce robust models resistant to overfitting.  Model accuracy was assessed by randomly reserving 20 percent of the samples for cross-validation testing.  [Models were built with the “randomForests” package in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/rf.R) (Liaw & Wiener 2002).  Multiple models were developed by adding and removing variables.  The best performing model with the highest and most consistent performing accuracy was chosen to use in the mapping application.  In all models core forest in the upstream drainage basin was the most important in explaining high quality conditions (Figure 2).
+I developed a random forest model to predict the occurrence of high quality conditions (BCG 1&2) in Connecticut streams.  Random Forest (RF) is a regression and classification modeling approach that has been widely used in ecological modeling (Cutler et al. 2007, Valavi et al. 2021).  RF models combine predictions from many trees based on bootstrapped samples of predictor and response data to produce robust models resistant to overfitting.  Model accuracy was assessed by randomly reserving 20 percent of the samples for cross-validation testing.  [Models were built with the “randomForests” package in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/rf.R) (Liaw & Wiener 2002).  Multiple models were developed by adding and removing predictor variables.  The best performing model with the highest and most consistent performing accuracy was chosen to use in the mapping application.  In all models core forest in the upstream drainage basin was the most important in explaining the most variation in high quality conditions (Figure 5).
 
-![Figure 3. RF Variable Importance Plot](analysis/images/RFVarImp.png)
+![Figure 5. RF Variable Importance Plot](analysis/images/RFVarImp.png)
 
-*Figure 3. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is measured as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
+*Figure 5. Random Forest Variable Importance.  Predictors in the final model included percent core forest (coreforest), percent open water (openwater), percent wetland (wetland), percent agriculture (ag) and percent stratified drift (catch_strdrf_pct).  Importance is measured as the mean decrease in Gini Index for each predictor. The Gini Index is calculated as 2p(1 − p), where p is the proportion of one of the classes (e.g. presence and absence of HQ conditions are the classes)*
 
 
-The final model included percent core forest in the drainage basin, percent open water in the drainage basin, percent wetland in the drainage basin, percent agriculture in the drainage basin and percent stratified drift in the stream catchment.  The final model had an overall accuracy of 70%, predicting high quality conditions correctly 67% of the time.
+The final model included percent core forest in the drainage basin, percent open water in the drainage basin, percent wetland in the drainage basin, percent agriculture in the drainage basin and percent stratified drift in the stream catchment.  The final model had an overall accuracy of 75%, predicting high quality conditions correctly 70% of the time.
 
 
 ## III. Mapping Methodology and Results
@@ -92,18 +96,18 @@ The stream catchment data was derived from a high resolution National Hydrograph
 
 **High Quality Stream Condition Data**
 
-The high quality stream condition data for the web-based mapping application was derived from the modeling results described in Section II.  Core forest in the upstream watershed was found to be the most important predictor in high quality stream conditions.  This is consistent with previous findings in Connecticut  showing that urban sprawl resulting in the reduction of core forest is a key threat to maintaining high quality conditions in Connecticut streams (Bellucci et al. 2013, Kanno et al.  2015, Barclay et al.  2016, Arnold et al. 2020, Condon 2022).
+The high quality stream condition data was derived from the modeling results described in Section II.  Core forest in the upstream drainage basin was found to be the most important predictor in high quality stream conditions.  This is consistent with previous findings in Connecticut showing that urban sprawl resulting in the reduction of core forest is a key threat to maintaining high quality conditions in Connecticut streams (Bellucci et al. 2013, Kanno et al.  2015, Barclay et al.  2016, Arnold et al. 2020, Condon 2022).
 
-The model was run using the most current land cover data (2015) (CT CLEAR, 2022) to identify the stream catchments with a high probability (> 50%) of supporting high quality conditions.  Twenty additional runs of the model were performed reducing the core forest in the upstream drainage basins by 1 percent each time to evaluate the changes in high quality stream conditions across the State for each reduction scenario.  The resulting model runs were compiled in a JSON file that was joined to the catchment data for drawing.
+The model was run using the most current land cover data (2015) (CT CLEAR, 2022) to identify the stream catchments with a high probability (> 50%) of supporting high quality conditions.  Twenty additional runs of the model were performed reducing the core forest in the upstream drainage basins by 1 percent each time to evaluate the changes in high quality stream conditions across the State for each reduction scenario.  The resulting model runs were compiled in a JSON file that was joined to the catchment data for rendering in the application.
 
 **Drainage Basin Condition Data**
 
-Calculations of the upstream drainage basin stream kilometers supporting high quality conditions was calculated using a [custom script developed in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R).  The calculations were run to get the number of HQ stream kilometers under each core forest reduction scenario.  The resulting drainage basin calculations were compiled in a JSON file that was joined to the catchment data for use in the application.
+Calculations of the upstream drainage basin stream kilometers supporting high quality conditions was calculated using a [custom script developed in R](https://github.com/marybecker/HQStreamEval/blob/main/analysis/accum_attributes_V2.R).  The calculations were run to get the number of high quality stream kilometers under each core forest reduction scenario.  The resulting drainage basin calculations were compiled in a JSON file that was joined to the catchment data for use in the application.
 
 
 ### B. Medium for delivery
 
-The application is a web-based client-side mapping application primarily designed for typically desktop use with a 1280 X 1024 resolution, but is also suitable for smaller screen resolutions.  Pre-computed model predictions are served as JSON files.  A series of [R](https://www.r-project.org/) scripts document reproducible workflows of data processing and model development.  The technology stack for the web-based application includes HTML/CSS/Javascript, [D3.js](https://d3js.org/),  [MapBox JS GL](https://docs.mapbox.com/mapbox-gl-js/api/), [Observable Plot](https://observablehq.com/plot), [Google Fonts](https://fonts.google.com/about) and a [Bootstrap responsive framework](https://getbootstrap.com/).
+The application is a web-based client-side mapping application primarily designed for typically desktop use with a 1280 X 1024 resolution, but is also suitable for smaller screen resolutions.  Pre-computed model predictions are served as JSON files.  A series of [R](https://www.r-project.org/) scripts document reproducible workflows of data processing and model development.  The technology stack for the web-based application includes HTML/CSS/Javascript, [D3.js](https://d3js.org/),  [MapBox JS GL](https://docs.mapbox.com/mapbox-gl-js/api/), [Observable Plot](https://observablehq.com/plot), [Google Fonts](https://fonts.google.com/about) and [Bootstrap](https://getbootstrap.com/).
 
 ### C. Application layout
 
@@ -113,13 +117,13 @@ The application layout is a simple straight forward design with a small top titl
 
 ![HQ Vulnerability](presentation/images/hq_water_vulnerability_map_mockup.jpg)
 
-*Figure 4.  Full Scale Wire Frame*
+*Figure 6.  Full Scale Wire Frame*
 
 The mapping application displays the likelihood of stream network drainage catchments supporting high quality conditions and biological integrity.  The catchment data is represented as polygons.  Drainage catchments are areas that drain to a particular stream segment.  Catchments are delineated based on the underlying stream network.  Use of drainage catchments convey the importance of land-water interactions that effect stream conditions.  The likelihood of a drainage catchment supporting high quality conditions is displayed using a color gradient of blue to orange.  The more likely a catchment is predicted to support a high quality condition, the darker the blue color will be displayed.  Catchments with less than a 50% likelihood are displayed as varying shades of orange.
 
 ### E. User Interaction
 
-The mapping application allows the user to explore 'what-if' scenarios through an interaction with a slider bar.  The slider bar indicates a level of human induced change in core forest that effects the condition of the stream.  The slider bar indicates a percent reduction of core forest in the upstream drainage basin from the original condition for each high quality stream segment.  As the user changes the percent reduction using the slider bar the corresponding catchments change in color based on model predictions for that change.  In this action the slider is displaying updated model predictions based on the changed input data.  Stream loss of high quality conditions with a reduction in core forest from the original condition is indicated by highlighting the catchments that changed in varying shades of orange.
+The mapping application allows the user to explore 'what-if' scenarios through an interaction with a slider bar.  The slider bar is used to change the level of human induced disturbance in core forest causing an effect in the condition streams across the State.  The level of disturbance is noted below the slider showing the percent reduction of core forest in the upstream drainage basin from the current condition for each high quality stream segment.  As the user changes the percent reduction using the slider bar the corresponding catchments change in color based on model predictions.  In this action the slider is displaying updated model predictions based on the changed input data.  Stream loss of high quality conditions with a reduction in core forest from the original condition is indicated by changing the catchment color to varying shades of orange.
 
 Overall high quality stream kilometer loss across the State for a given condition is calculated on the fly.  The calculation is displayed and plotted within the legend.  Users can also hover over a catchment which highlights the catchment of interest and displays a popup giving the precise probability prediction for the given model inputs.  Within the hover over, users can also find the number and percentage of high quality stream kilometers lost within the upstream drainage basin for the given reduction of core forest from current condition.
 
@@ -138,7 +142,7 @@ Urban sprawl resulting in the reduction of core forest is a key threat to mainta
 
 ## V. Acknowledgments
 
-Much thanks to my advisor Rich Donohue at UKY for his guidance and helpful suggestions in the development of this project.  Thanks to Boyd Shearer at UKY for code examples and Timothy Becker at UHartford for code examples, suggestions and comments that greatly improved this map. Thanks to my class mates in Digital Mapping 699 at UKY for the very helpful suggestions that greatly improved the usability of the map. Thanks to the Monitoring and Assessment and GIS staff at CT DEEP for their dedicated efforts to collect, organize and manage and high-quality data.  Thanks to Tony Stallins and Alice Turkington at UKY for review of the project and serving on my MS committee.
+Much thanks to my advisor Rich Donohue at UKY for his guidance and helpful suggestions in the development of this project.  Thanks to Boyd Shearer at UKY for code examples and Timothy Becker at UHartford for code examples, suggestions and comments that greatly improved this map. Thanks to my class mates in Digital Mapping 699 at UKY for the very helpful suggestions that greatly improved the usability of the map. Thanks to the Monitoring and Assessment, Inland Fisheries and GIS staff at CT DEEP for their dedicated efforts to collect, organize and manage and high-quality data.  Thanks to Tony Stallins and Alice Turkington at UKY for review of the project and serving on my MS committee.
 
 ## VI. References
 
