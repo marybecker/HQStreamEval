@@ -16,7 +16,7 @@
 ##         Algorithm: Dynamic Programming with BFS --> O(|V|)
 
 base <- 'analysis/data/'
-lc   <- 'pred_hq_length'
+lc   <- 'turf'
 
 #import flow network files for a major basin
 mbasin <- 'statewide';
@@ -29,14 +29,14 @@ if (fileType == '.txt')
 lookup<- lookup[order(lookup$HydroID),]
 
 #import params for each flow network catchment 
-# params   <- read.table(paste0(base,lc,'_statewide_allyrs.csv'), header=T,sep=',')
-params   <- read.table(paste0(base,lc,'.csv'), header=T,sep=',')
+params   <- read.table(paste0(base,lc,'_statewide_allyrs.csv'), header=T,sep=',')
+# params   <- read.table(paste0(base,lc,'.csv'), header=T,sep=',')
 params[is.na(params)] <- 0
-# params[dim(params)[1]+1,] <- c(1,0,0,0,0,0,0,0,0)# add row for hydroID 1 and 0 for each param
-params[dim(params)[1]+1,] <- c(1,0,0,0,0,0,
-                               0,0,0,0,0,
-                               0,0,0,0,0,
-                               0,0,0,0,0,0)# add row for hydroID 1 and 0 for each param
+params[dim(params)[1]+1,] <- c(1,0,0,0,0,0,0,0,0)# add row for hydroID 1 and 0 for each param
+# params[dim(params)[1]+1,] <- c(1,0,0,0,0,0,
+#                                0,0,0,0,0,
+#                                0,0,0,0,0,
+#                                0,0,0,0,0,0)# add row for hydroID 1 and 0 for each param
 params <- params[order(params$HydroID),]
 
 #Check that there are the same number of hydroIDs in each dataframe
@@ -123,13 +123,13 @@ result_df$HydroID <- rownames(result_df)
 
 
 # only for calculating percentage land cover
-# for(i in 2:8){
-#   lc_yr <- paste0(strsplit(names(result_df)[i],"_")[[1]][1],"_",
-#                   strsplit(names(result_df)[i],"_")[[1]][2],"_pct")
-#   result_df[lc_yr] <- result[,i] / result_df[,1] 
-# }
-# 
-# result_df <- result_df[,grep("HydroID",colnames(result_df)):dim(result_df)[2]]
+for(i in 2:8){
+  lc_yr <- paste0(strsplit(names(result_df)[i],"_")[[1]][1],"_",
+                  strsplit(names(result_df)[i],"_")[[1]][2],"_pct")
+  result_df[lc_yr] <- result[,i] / result_df[,1]
+}
+
+result_df <- result_df[,grep("HydroID",colnames(result_df)):dim(result_df)[2]]
 
 result.name <- paste0(base,'lc_results/',mbasin,'_',lc,'_accum_attr.csv')
 write.csv(result_df,result.name,row.names=FALSE)

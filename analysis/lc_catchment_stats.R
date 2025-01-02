@@ -33,11 +33,11 @@ extract_lc <- function(r_file,poly,l_type){
     lc_yr <- str_sub(r_file[i],-8,-5) #get year
     lc <- rast(paste0(r_path,r_file[i])) #read in raster file
     # calc total cnt of pixels
-    l_ex <- extract(lc, poly, fun=function(x,...)length(na.omit(x)),df=TRUE)
+    l_ex <- extract(lc, poly, fun=function(x,...)length(na.omit(x)), raw=FALSE)
     # calc sum of (0,1) pixels
-    ex <- extract(lc, poly, fun=sum, na.rm=TRUE, df=TRUE)
+    ex <- extract(lc, poly, fun=sum, na.rm=TRUE, raw=FALSE)
     df <- data.frame(poly$HydroID,l_ex[,2],ex[,2])
-    df[,3] <- df[,3]-1
+    # df[,3] <- df[,3]-1
     df$pct <- df[,3]/df[,2] # calc proportion land cover
     colnames(df) <- c("HydroID","cnt",paste0(l_type,"_",lc_yr,"_sum"),
                       paste0(l_type,"_",lc_yr,"_pct"))
@@ -52,7 +52,7 @@ extract_lc <- function(r_file,poly,l_type){
 ### ct ff: https://clear.uconn.edu/projects/landscape/CT/forestfrag.htm ########
 
 # list files
-landcover<- "openwater"
+landcover<- "turf"
 # grids    <- list.files(r_path, pattern = "*.tif$")
 lc_grids <- list.files(r_path, pattern = "landcover_*")
 
@@ -66,7 +66,7 @@ lc_grids <- list.files(r_path, pattern = "landcover_*")
 #That may be easier to read and write than the equivalent 1-5 -> 1, 5-10 -> 2, 
 #10-15 -> 3 with right=TRUE and include.lowest=TRUE
 
-c_spec <- cbind(from = c(-Inf, -Inf, 1), to = c(-Inf, 1, Inf), 
+c_spec <- cbind(from = c(-Inf, 1, 2), to = c(1, 2, Inf), 
                 becomes = c(0, 1, 0))
 
 reclass_lc(lc_grids,c_spec,landcover)
